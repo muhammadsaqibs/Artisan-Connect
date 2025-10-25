@@ -1,0 +1,23 @@
+# Go to backend folder
+cd C:\zepvi-website\backend
+
+# Kill any stray Node.js processes
+Get-Process node -ErrorAction SilentlyContinue | Stop-Process -Force
+
+# Install dependencies
+npm i
+
+# Install multer separately
+npm i multer
+
+# Make uploads folder if not already there
+mkdir uploads -ErrorAction SilentlyContinue
+
+# Drop duplicate indexes on slug (if they exist)
+node -e "(async()=>{const m=require('mongoose');require('dotenv').config();await m.connect(process.env.MONGODB_URI);try{await m.connection.db.collection('categories').dropIndex('slug_1')}catch(e){}try{await m.connection.db.collection('products').dropIndex('slug_1')}catch(e){}await m.disconnect()})()"
+
+# Seed categories
+node scripts/seedCategories.mjs
+
+# Start backend
+npm start
