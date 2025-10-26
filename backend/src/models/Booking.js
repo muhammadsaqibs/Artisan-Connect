@@ -58,6 +58,31 @@ const bookingSchema = new mongoose.Schema(
       enum: ["booked", "started", "in-progress", "completed", "cancelled"],
       default: "booked",
     },
+    // Professional Category Fields for Reliability Scoring
+    completion_status: {
+      type: String,
+      enum: ["Completed", "Partially Completed", "Not Completed"],
+      default: "Not Completed"
+    },
+    arrival_status: {
+      type: String,
+      enum: ["On Time", "Late", "Missed"],
+      default: "Missed"
+    },
+    feedback_status: {
+      type: String,
+      enum: ["Positive", "Neutral", "Negative"],
+      default: "Neutral"
+    },
+    
+    // Calculated Reliability Metrics
+    completion_rate: { type: Number, default: 0 },
+    on_time_rate: { type: Number, default: 0 },
+    feedback_rate: { type: Number, default: 0 },
+    reliability_score: { type: Number, default: 0 },
+    last_updated: { type: Date, default: Date.now },
+    
+    // Admin Verification
     adminVerification: {
       isVerified: { type: Boolean, default: false },
       verifiedBy: {
@@ -66,6 +91,9 @@ const bookingSchema = new mongoose.Schema(
       },
       verifiedAt: { type: Date },
       notes: { type: String },
+      completionVerified: { type: Boolean, default: false },
+      arrivalVerified: { type: Boolean, default: false },
+      feedbackVerified: { type: Boolean, default: false },
     },
     timeline: [
       {
@@ -100,3 +128,4 @@ bookingSchema.index({ "bookingDetails.bookingDate": 1 });
 const Booking = mongoose.model("Booking", bookingSchema);
 
 export default Booking;
+

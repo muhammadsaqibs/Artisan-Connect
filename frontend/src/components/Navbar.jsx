@@ -1,14 +1,12 @@
 import { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ShoppingCart, User, LogOut } from "lucide-react";
-import { useCart } from "../context/CartContext.jsx";
+import { Calendar, User, LogOut } from "lucide-react";
 import { AuthContext } from "../context/AuthContext";
 import { getPlaceholderImage } from "../utils/placeholders";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { user, logout } = useContext(AuthContext);
-  const { cartCount } = useCart();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -18,19 +16,12 @@ export default function Navbar() {
 
   const menuItems = [
     { name: "Home", path: "/" },
-    { name: "Providers", path: "/providers" },
+    { name: "Service Providers", path: "/providers" },
     { name: "Track Service", path: "/track-order" },
     { name: "About", path: "/about" },
     { name: "Contact", path: "/contact" },
     { name: "Blog", path: "/blog" },
   ];
-
-  const CartBadge = () =>
-    cartCount > 0 && (
-      <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full shadow-md">
-        {cartCount}
-      </span>
-    );
 
   return (
     <header className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 shadow-lg sticky top-0 z-50 w-full">
@@ -114,16 +105,14 @@ export default function Navbar() {
             </>
           )}
           <Link to="/dashboard" className="relative">
-            <ShoppingCart className="w-6 h-6 text-gray-200 hover:text-cyan-400 transition" />
-            <CartBadge />
+            <Calendar className="w-6 h-6 text-gray-200 hover:text-cyan-400 transition" />
           </Link>
         </div>
 
         {/* Mobile Menu Button */}
         <div className="md:hidden flex items-center gap-3">
           <Link to="/dashboard" className="relative">
-            <ShoppingCart className="w-6 h-6 text-gray-200 hover:text-cyan-400 transition" />
-            <CartBadge />
+            <Calendar className="w-6 h-6 text-gray-200 hover:text-cyan-400 transition" />
           </Link>
           <button
             onClick={() => setIsOpen(!isOpen)}

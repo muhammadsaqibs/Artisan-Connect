@@ -5,6 +5,7 @@ import {
   getCustomerBookings,
   getProviderBookings,
   updateBookingStatus,
+  updateArrivalStatus,
   toggleProviderAvailability,
   adminVerifyBooking,
   getAllBookings,
@@ -21,6 +22,7 @@ router.put("/:id/review", protect, submitCustomerReview);
 // Provider routes
 router.get("/provider", protect, getProviderBookings);
 router.put("/:id/status", protect, updateBookingStatus);
+router.put("/:id/arrival", protect, updateArrivalStatus);
 
 // Admin routes
 router.get("/admin", protect, admin, getAllBookings);

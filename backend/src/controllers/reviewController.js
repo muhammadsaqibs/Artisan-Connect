@@ -27,6 +27,9 @@ export const submitCustomerReview = async (req, res) => {
       });
     }
 
+    // Determine feedback status based on rating
+    const feedbackStatus = ReliabilityScoreService.determineFeedbackStatus(rating);
+
     // Update booking with customer review
     booking.customerRating = {
       rating,
@@ -38,15 +41,17 @@ export const submitCustomerReview = async (req, res) => {
     booking.timeline.push({
       status: "reviewed",
       timestamp: new Date(),
-      note: `Customer rated ${rating}/5 stars`,
+      note: `Customer rated ${rating}/5 stars - ${feedbackStatus} feedback`,
       updatedBy: req.user._id,
     });
 
     await booking.save();
 
-    // Update provider reliability score
+    // Auto-update feedback status and reliability score
     try {
-      await ReliabilityScoreService.updateProviderScore(booking.provider);
+      await ReliabilityScoreService.updateJobStatus(bookingId, {
+        feedback_status: feedbackStatus
+      });
     } catch (error) {
       console.error("Error updating reliability score:", error);
     }

@@ -35,7 +35,8 @@ const providerSchema = new mongoose.Schema(
     subCategory: { type: String }, // e.g., Pipe Repair
     rating: { type: Number, default: 0 },
     numReviews: { type: Number, default: 0 },
-    reliabilityScore: { type: Number, default: 0, min: 0, max: 100 }, // Based on job completion
+    reliabilityScore: { type: Number, default: 0, min: 0, max: 100 }, // Auto-calculated reliability score
+    lastScoreUpdate: { type: Date, default: Date.now }, // When score was last updated
     isVerified: { type: Boolean, default: false },
     verificationStatus: {
       type: String,

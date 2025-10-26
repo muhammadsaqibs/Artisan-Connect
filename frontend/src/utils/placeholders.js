@@ -10,3 +10,4 @@ export const getPlaceholderImage = (size = 32) => {
   };
   return placeholders[size] || placeholders[32];
 };
+

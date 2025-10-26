@@ -11,3 +11,4 @@ router.get("/:providerId", protect, getReliabilityScore);
 router.post("/update-all", protect, admin, updateAllScores);
 
 export default router;
+

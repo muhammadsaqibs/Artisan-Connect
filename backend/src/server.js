@@ -11,6 +11,7 @@ import paymentRoutes from "./routes/paymentRoutes.js";
 import providerRoutes from "./routes/providerRoutes.js";
 import serviceRequestRoutes from "./routes/serviceRequestRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
+import adminReliabilityRoutes from "./routes/adminReliabilityRoutes.js";
 import quoteRequestRoutes from "./routes/quoteRequestRoutes.js";
 import reviewRoutes from "./routes/reviewRoutes.js";
 import notificationRoutes from "./routes/notificationRoutes.js";
@@ -45,6 +46,7 @@ app.use("/api/notifications", notificationRoutes);
 app.use("/api/bookings", bookingRoutes);
 app.use("/api/reliability", reliabilityRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/admin", adminReliabilityRoutes);
 app.use("/api", paymentRoutes);
 
 app.get("/", (req, res) => {

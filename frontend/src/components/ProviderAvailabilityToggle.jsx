@@ -75,3 +75,4 @@ export default function ProviderAvailabilityToggle({ isAvailable, onToggle }) {
     </div>
   );
 }
+

@@ -185,10 +185,19 @@ export const updateBookingStatus = async (req, res) => {
 
     await booking.save();
 
-    // Automatically update provider reliability score if booking is completed
+    // Automatically update job statuses and reliability score if booking is completed
     if (status === "completed" || workStatus === "completed") {
       try {
-        await ReliabilityScoreService.updateProviderScore(booking.provider);
+        // Auto-determine completion status
+        const completionStatus = ReliabilityScoreService.determineCompletionStatus(
+          workStatus || status, 
+          true // Assume customer confirmed if status is completed
+        );
+        
+        // Update job statuses
+        await ReliabilityScoreService.updateJobStatus(booking._id, {
+          completion_status: completionStatus
+        });
       } catch (error) {
         console.error("Error updating reliability score:", error);
       }
@@ -198,6 +207,69 @@ export const updateBookingStatus = async (req, res) => {
       success: true,
       data: booking,
       message: "Booking status updated successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+// @desc Update provider arrival status
+// @route PUT /api/bookings/:id/arrival
+// @access Private
+export const updateArrivalStatus = async (req, res) => {
+  try {
+    const { arrivalTime } = req.body;
+    const bookingId = req.params.id;
+
+    const booking = await Booking.findById(bookingId);
+    if (!booking) {
+      return res.status(404).json({
+        success: false,
+        message: "Booking not found",
+      });
+    }
+
+    // Check if user has permission to update this booking
+    const isProvider = booking.provider.toString() === req.user.providerProfileId?.toString();
+    const isAdmin = req.user.isAdmin;
+
+    if (!isProvider && !isAdmin) {
+      return res.status(403).json({
+        success: false,
+        message: "Not authorized to update this booking",
+      });
+    }
+
+    // Determine arrival status based on timing
+    const scheduledTime = new Date(booking.bookingDetails.bookingDate);
+    const actualTime = new Date(arrivalTime);
+    const arrivalStatus = ReliabilityScoreService.determineArrivalStatus(scheduledTime, actualTime);
+
+    // Update arrival status
+    booking.arrival_status = arrivalStatus;
+    
+    // Add to timeline
+    booking.timeline.push({
+      status: "arrived",
+      timestamp: actualTime,
+      note: `Provider arrived: ${arrivalStatus}`,
+      updatedBy: req.user._id,
+    });
+
+    await booking.save();
+
+    // Auto-update reliability score
+    await ReliabilityScoreService.updateJobStatus(bookingId, {
+      arrival_status: arrivalStatus
+    });
+
+    res.json({
+      success: true,
+      data: booking,
+      message: `Arrival status updated: ${arrivalStatus}`,
     });
   } catch (error) {
     res.status(500).json({

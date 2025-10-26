@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Alert from "../components/Alert.jsx";
-import { Plus, Eye, Package, Users, DollarSign, ShoppingCart, CheckCircle, XCircle, Calendar } from "lucide-react";
+import { Plus, Eye, Package, Users, CheckCircle, XCircle, Calendar, BookOpen } from "lucide-react";
 import { getPlaceholderImage } from "../utils/placeholders";
 import AdminBookingManagement from "../components/AdminBookingManagement";
 
@@ -21,11 +21,9 @@ export default function AdminDashboard() {
   const [categories, setCategories] = useState([]);
   const [avatarFile, setAvatarFile] = useState(null);
   const [subCatCategoryId, setSubCatCategoryId] = useState("");
-  const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [alert, setAlert] = useState(null);
-  const [activeTab, setActiveTab] = useState("overview");
-  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [activeTab, setActiveTab] = useState("providers");
 
   const showAlert = (type, message) => {
     setAlert({ type, message });
@@ -38,17 +36,12 @@ export default function AdminDashboard() {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const [{ data: p }, { data: o }, { data: c }, { data: adminProviders }] = await Promise.all([
+      const [{ data: p }, { data: c }] = await Promise.all([
         axios.get("http://localhost:5000/api/providers"),
-        axios.get("http://localhost:5000/api/orders", { headers: authHeaders }),
         axios.get("http://localhost:5000/api/categories"),
-        axios.get("http://localhost:5000/api/admin/providers", { headers: authHeaders }),
       ]);
       setProviders(p.data || []);
-      setOrders(o || []);
       setCategories(c.data || []);
-      // Store admin provider users separately if needed
-      // Admin providers are already fetched and shown via p.data
     } catch (err) {
       console.log("Error fetching data:", err.message);
       showAlert("error", "Failed to fetch data");
@@ -195,49 +188,14 @@ export default function AdminDashboard() {
     }
   };
 
-  const updateOrderStatus = async (id, status) => {
-    try {
-      const response = await axios.put(`http://localhost:5000/api/orders/${id}/status`, { status }, { headers: authHeaders });
-      if (response.data) {
-        await fetchData();
-        showAlert("success", "Order status updated successfully!");
-      } else {
-        showAlert("error", "Failed to update order status");
-      }
-    } catch (err) {
-      showAlert("error", "Failed to update order status");
-    }
-  };
-
-  const deleteOrderAdmin = async (id) => {
-    if (!confirm("Are you sure you want to delete this order?")) return;
-    try {
-      await axios.delete(`http://localhost:5000/api/orders/${id}`, { headers: authHeaders });
-      await fetchData();
-      showAlert("success", "Order deleted successfully!");
-    } catch (err) {
-      showAlert("error", "Failed to delete order");
-    }
-  };
-
-  const getStatusColor = (status) => {
-    switch (status) {
-      case "placed": return "bg-blue-100 text-blue-800";
-      case "packing": return "bg-yellow-100 text-yellow-800";
-      case "shipped": return "bg-purple-100 text-purple-800";
-      case "out_for_delivery": return "bg-orange-100 text-orange-800";
-      case "delivered": return "bg-green-100 text-green-800";
-      default: return "bg-gray-100 text-gray-800";
-    }
-  };
 
   const getStats = () => {
     const totalProviders = providers.length;
-    const totalOrders = orders.length;
-    const totalRevenue = orders.reduce((sum, order) => sum + (order.totalPrice || 0), 0);
-    const pendingOrders = orders.filter(order => order.status === "placed" || order.status === "packing").length;
+    const verifiedProviders = providers.filter(p => p.verificationStatus === 'verified').length;
+    const pendingProviders = providers.filter(p => p.verificationStatus === 'pending').length;
+    const totalBookings = 0; // Will be fetched from bookings API if needed
 
-    return { totalProviders, totalOrders, totalRevenue, pendingOrders };
+    return { totalProviders, verifiedProviders, pendingProviders, totalBookings };
   };
 
   const stats = getStats();
@@ -270,11 +228,11 @@ export default function AdminDashboard() {
         <div className="bg-white rounded-xl shadow p-6">
           <div className="flex items-center">
             <div className="p-2 bg-green-100 rounded-lg">
-              <ShoppingCart className="w-6 h-6 text-green-600" />
+              <CheckCircle className="w-6 h-6 text-green-600" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Total Orders</p>
-              <p className="text-2xl font-bold text-gray-900">{stats.totalOrders}</p>
+              <p className="text-sm font-medium text-gray-600">Verified Providers</p>
+              <p className="text-2xl font-bold text-gray-900">{stats.verifiedProviders}</p>
             </div>
           </div>
         </div>
@@ -282,23 +240,23 @@ export default function AdminDashboard() {
         <div className="bg-white rounded-xl shadow p-6">
           <div className="flex items-center">
             <div className="p-2 bg-yellow-100 rounded-lg">
-              <DollarSign className="w-6 h-6 text-yellow-600" />
+              <Users className="w-6 h-6 text-yellow-600" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Total Revenue</p>
-              <p className="text-2xl font-bold text-gray-900">${stats.totalRevenue.toFixed(2)}</p>
+              <p className="text-sm font-medium text-gray-600">Pending Verification</p>
+              <p className="text-2xl font-bold text-gray-900">{stats.pendingProviders}</p>
             </div>
           </div>
         </div>
 
         <div className="bg-white rounded-xl shadow p-6">
           <div className="flex items-center">
-            <div className="p-2 bg-orange-100 rounded-lg">
-              <Users className="w-6 h-6 text-orange-600" />
+            <div className="p-2 bg-purple-100 rounded-lg">
+              <BookOpen className="w-6 h-6 text-purple-600" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Pending Orders</p>
-              <p className="text-2xl font-bold text-gray-900">{stats.pendingOrders}</p>
+              <p className="text-sm font-medium text-gray-600">Service Bookings</p>
+              <p className="text-2xl font-bold text-gray-900">{stats.totalBookings}</p>
             </div>
           </div>
         </div>
@@ -309,10 +267,8 @@ export default function AdminDashboard() {
         <div className="border-b border-gray-200">
           <nav className="flex space-x-8 px-6">
             {[
-              { id: "overview", label: "Overview", icon: Package },
               { id: "providers", label: "Providers", icon: Package },
               { id: "bookings", label: "Bookings", icon: Calendar },
-              { id: "orders", label: "Orders", icon: ShoppingCart },
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -331,43 +287,6 @@ export default function AdminDashboard() {
         </div>
 
         <div className="p-6">
-          {/* Overview Tab */}
-          {activeTab === "overview" && (
-            <div className="space-y-6">
-              <div>
-                <h3 className="text-lg font-semibold mb-4">Recent Orders</h3>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left">
-                    <thead>
-                      <tr className="border-b">
-                        <th className="py-2">Order Token</th>
-                        <th>Customer</th>
-                        <th>Total</th>
-                        <th>Status</th>
-                        <th>Date</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {orders.slice(0, 5).map((order) => (
-                        <tr key={order._id} className="border-b">
-                          <td className="py-2 font-mono text-sm">{order.orderToken}</td>
-                          <td>{order.user?.name}</td>
-                          <td>${order.totalPrice}</td>
-                          <td>
-                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}>
-                              {order.status?.replace('_', ' ').toUpperCase()}
-                            </span>
-                          </td>
-                          <td>{new Date(order.createdAt).toLocaleDateString()}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          )}
-
           {/* Providers Tab */}
           {activeTab === "providers" && (
             <div className="space-y-6">
@@ -522,94 +441,6 @@ export default function AdminDashboard() {
                   </div>
                 )}
               </div>
-            </div>
-          )}
-
-          {/* Orders Tab */}
-          {activeTab === "orders" && (
-            <div>
-              <h3 className="text-lg font-semibold mb-4">All Orders</h3>
-              {loading ? (
-                <div className="text-center py-8">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-                  <p className="mt-2 text-gray-600">Loading orders...</p>
-                </div>
-              ) : (
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left">
-                    <thead>
-                      <tr className="border-b">
-                        <th className="py-2">Order Token</th>
-                        <th>Customer</th>
-                        <th>Items</th>
-                        <th>Total</th>
-                        <th>Status</th>
-                        <th>Payment</th>
-                        <th>Date</th>
-                        <th>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {orders.map((order) => (
-                        <tr key={order._id} className="border-b hover:bg-gray-50">
-                          <td className="py-2 font-mono text-sm">{order.orderToken}</td>
-                          <td className="py-2">
-                            <div>
-                              <div className="font-medium">{order.user?.name}</div>
-                              <div className="text-sm text-gray-500">{order.user?.email}</div>
-                            </div>
-                          </td>
-                          <td className="py-2">
-                            <div className="text-sm">
-                              {order.orderItems?.length || 0} items
-                            </div>
-                          </td>
-                          <td className="py-2 font-semibold">${order.totalPrice}</td>
-                          <td className="py-2">
-                            <select
-                              value={order.status || "placed"}
-                              onChange={(e) => updateOrderStatus(order._id, e.target.value)}
-                              className={`px-2 py-1 rounded-full text-xs font-medium border ${getStatusColor(order.status)}`}
-                            >
-                              <option value="placed">PLACED</option>
-                              <option value="packing">PACKING</option>
-                              <option value="shipped">SHIPPED</option>
-                              <option value="out_for_delivery">OUT FOR DELIVERY</option>
-                              <option value="delivered">DELIVERED</option>
-                            </select>
-                          </td>
-                          <td className="py-2">
-                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                              order.isPaid ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
-                            }`}>
-                              {order.isPaid ? "PAID" : "UNPAID"}
-                            </span>
-                          </td>
-                          <td className="py-2 text-sm">
-                            {new Date(order.createdAt).toLocaleString()}
-                          </td>
-                          <td className="py-2 flex gap-2">
-                            <button
-                              onClick={() => setSelectedOrder(order)}
-                              className="text-blue-600 hover:text-blue-800 p-1"
-                              title="View Details"
-                            >
-                              <Eye className="w-4 h-4" />
-                            </button>
-                            <button
-                              onClick={() => deleteOrderAdmin(order._id)}
-                              className="text-red-600 hover:text-red-800 p-1"
-                              title="Delete Order"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
             </div>
           )}
 
