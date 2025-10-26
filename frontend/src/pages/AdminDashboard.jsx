@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Alert from "../components/Alert.jsx";
-import { Plus, Eye, Package, Users, CheckCircle, XCircle, Calendar, BookOpen } from "lucide-react";
+import { Eye, Package, Users, CheckCircle, XCircle, Calendar, BookOpen } from "lucide-react";
 import { getPlaceholderImage } from "../utils/placeholders";
 import AdminBookingManagement from "../components/AdminBookingManagement";
 
@@ -10,17 +10,8 @@ export default function AdminDashboard() {
   const token = localStorage.getItem("token");
   const authHeaders = { Authorization: `Bearer ${token}` };
 
-  const [providerForm, setProviderForm] = useState({
-    name: "",
-    hourlyRate: "",
-    skills: "",
-    category: "",
-    subCategory: "",
-  });
   const [providers, setProviders] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [avatarFile, setAvatarFile] = useState(null);
-  const [subCatCategoryId, setSubCatCategoryId] = useState("");
   const [loading, setLoading] = useState(true);
   const [alert, setAlert] = useState(null);
   const [activeTab, setActiveTab] = useState("providers");
@@ -61,60 +52,6 @@ export default function AdminDashboard() {
   useEffect(() => {
     fetchData();
   }, []);
-
-  const onChange = (e) => {
-    const { name, value } = e.target;
-    setProviderForm((f) => ({ ...f, [name]: value }));
-  };
-
-  const addProvider = async (e) => {
-    e.preventDefault();
-    
-    // Frontend validation
-    if (!providerForm.name || !providerForm.category || !providerForm.hourlyRate) {
-      showAlert("error", "Please fill in Name, Category, and Hourly Rate fields");
-      return;
-    }
-
-    try {
-      const fd = new FormData();
-      
-      // Always append required fields
-      fd.append("name", providerForm.name);
-      fd.append("category", providerForm.category);
-      fd.append("hourlyRate", providerForm.hourlyRate);
-      
-      // Append optional fields only if they have values
-      if (providerForm.skills) fd.append("skills", providerForm.skills);
-      if (providerForm.subCategory) fd.append("subCategory", providerForm.subCategory);
-      if (avatarFile) fd.append("profilePicture", avatarFile);
-      
-      console.log("FormData values:", {
-        name: providerForm.name,
-        category: providerForm.category,
-        hourlyRate: providerForm.hourlyRate
-      });
-      
-      const response = await axios.post("http://localhost:5000/api/providers", fd, { 
-        headers: { 
-          ...authHeaders,
-          "Content-Type": "multipart/form-data"
-        } 
-      });
-      
-      if (response.data.success) {
-        setProviderForm({ name: "", hourlyRate: "", skills: "", category: "", subCategory: "" });
-        setAvatarFile(null);
-        safeRefresh();
-        showAlert("success", "Provider added successfully!");
-      } else {
-        showAlert("error", "Failed to add provider");
-      }
-    } catch (err) {
-      console.error("Add provider error:", err);
-      showAlert("error", err?.response?.data?.message || "Failed to add provider");
-    }
-  };
 
   // Handlers for Category/Subcategory with precise alerts
   const handleAddCategory = async (e) => {
@@ -208,7 +145,7 @@ export default function AdminDashboard() {
       {/* Header */}
       <div className="bg-white rounded-xl shadow p-6">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Admin Dashboard</h1>
-        <p className="text-gray-600">Manage providers, orders, and platform analytics</p>
+        <p className="text-gray-600">Manage providers and service bookings</p>
       </div>
 
       {/* Stats Overview */}
@@ -290,55 +227,6 @@ export default function AdminDashboard() {
           {/* Providers Tab */}
           {activeTab === "providers" && (
             <div className="space-y-6">
-              {/* Add Provider Form */}
-              <div className="bg-gray-50 rounded-lg p-6">
-                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                  <Plus className="w-5 h-5" />
-                  Add New Provider
-                </h3>
-                <form onSubmit={addProvider} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" encType="multipart/form-data">
-                  <div className="flex flex-col">
-                    <label className="text-sm font-medium text-gray-700 mb-1">Name</label>
-                    <input type="text" name="name" value={providerForm.name} onChange={onChange} className="border rounded px-3 py-2" required />
-                  </div>
-                  <div className="flex flex-col">
-                    <label className="text-sm font-medium text-gray-700 mb-1">Hourly Rate</label>
-                    <input type="number" name="hourlyRate" value={providerForm.hourlyRate} onChange={onChange} className="border rounded px-3 py-2" required />
-                  </div>
-                  <div className="flex flex-col md:col-span-2 lg:col-span-3">
-                    <label className="text-sm font-medium text-gray-700 mb-1">Skills (comma-separated)</label>
-                    <textarea name="skills" value={providerForm.skills} onChange={onChange} className="border rounded px-3 py-2 resize-none" rows="2" />
-                  </div>
-                  {/* Avatar file */}
-                  <div className="flex flex-col">
-                    <label className="text-sm font-medium text-gray-700 mb-1">Profile Picture (png/jpg)</label>
-                    <input type="file" accept="image/png, image/jpeg, image/jpg, image/webp" onChange={(e)=> setAvatarFile(e.target.files?.[0] || null)} className="border rounded px-3 py-2" />
-                  </div>
-                  {/* Category selectors */}
-                  <div className="flex flex-col">
-                    <label className="text-sm font-medium text-gray-700 mb-1">Category</label>
-                    <select name="category" value={providerForm.category} onChange={onChange} className="border rounded px-3 py-2" required>
-                      <option value="">Select category</option>
-                      {categories.map((c)=> (
-                        <option key={c.id} value={c.id}>{c.name}</option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="flex flex-col">
-                    <label className="text-sm font-medium text-gray-700 mb-1">Sub Category</label>
-                    <select name="subCategory" value={providerForm.subCategory} onChange={onChange} className="border rounded px-3 py-2">
-                      <option value="">Select subcategory</option>
-                      {categories.find(c=> c.id === providerForm.category)?.subcategories.map((s)=> (
-                        <option key={s.id} value={s.id}>{s.name}</option>
-                      ))}
-                    </select>
-                  </div>
-                  <button type="submit" className="md:col-span-2 lg:col-span-3 bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition">
-                    Add Provider
-                  </button>
-                </form>
-              </div>
-
               {/* Manage Categories */}
               <div className="bg-white rounded-lg p-6">
                 <h3 className="text-lg font-semibold mb-4">Categories</h3>
@@ -399,8 +287,10 @@ export default function AdminDashboard() {
                           <th>Name</th>
                           <th>Hourly Rate</th>
                           <th>Category</th>
-                          <th>Status</th>
-                          <th>Verify</th>
+                          <th>Verification Status</th>
+                          <th>Working Status</th>
+                          <th>Reliability Score</th>
+                          <th>Actions</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -428,6 +318,28 @@ export default function AdminDashboard() {
                                 {p.verificationStatus?.toUpperCase()}
                               </span>
                             </td>
+                            <td>
+                              <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                p.workingStatus === 'available' ? 'bg-green-100 text-green-800' :
+                                p.workingStatus === 'busy' ? 'bg-yellow-100 text-yellow-800' :
+                                p.workingStatus === 'offline' ? 'bg-gray-100 text-gray-800' :
+                                'bg-blue-100 text-blue-800'
+                              }`}>
+                                {p.workingStatus?.toUpperCase() || 'AVAILABLE'}
+                              </span>
+                            </td>
+                            <td>
+                              <div className="flex items-center gap-2">
+                                <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                  p.reliabilityScore >= 80 ? 'bg-green-100 text-green-800' :
+                                  p.reliabilityScore >= 60 ? 'bg-yellow-100 text-yellow-800' :
+                                  p.reliabilityScore >= 40 ? 'bg-orange-100 text-orange-800' :
+                                  'bg-red-100 text-red-800'
+                                }`}>
+                                  {p.reliabilityScore || 0}%
+                                </span>
+                              </div>
+                            </td>
                             <td className="py-2">
                               <div className="flex items-center gap-2">
                                 <button onClick={async()=>{ await axios.patch(`http://localhost:5000/api/providers/${p._id}/verify`, { status: 'verified' }, { headers: authHeaders }); safeRefresh(); showAlert('success','Provider verified'); }} className="text-green-600" title="Verify"><CheckCircle className="w-5 h-5"/></button>
@@ -452,87 +364,6 @@ export default function AdminDashboard() {
           )}
         </div>
       </div>
-
-      {/* Order Details Modal */}
-      {selectedOrder && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-semibold">Order Details</h3>
-              <button
-                onClick={() => setSelectedOrder(null)}
-                className="text-gray-500 hover:text-gray-700"
-              >
-                ✕
-              </button>
-            </div>
-
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Order Token</label>
-                  <p className="text-sm text-gray-900 font-mono">{selectedOrder.orderToken}</p>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Status</label>
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(selectedOrder.status)}`}>
-                    {selectedOrder.status?.replace('_', ' ').toUpperCase()}
-                  </span>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Customer</label>
-                  <p className="text-sm text-gray-900">{selectedOrder.user?.name}</p>
-                  <p className="text-sm text-gray-500">{selectedOrder.user?.email}</p>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Total</label>
-                  <p className="text-sm text-gray-900 font-semibold">${selectedOrder.totalPrice}</p>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Order Items</label>
-                <div className="space-y-2">
-                  {selectedOrder.orderItems?.map((item, index) => (
-                    <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded">
-                      <div className="flex items-center gap-3">
-                        <img src={item.image} alt={item.name} className="w-10 h-10 rounded object-cover" />
-                        <div>
-                          <p className="font-medium">{item.name}</p>
-                          <p className="text-sm text-gray-500">Qty: {item.qty}</p>
-                        </div>
-                      </div>
-                      <p className="font-semibold">${item.price}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Shipping Address</label>
-                <div className="p-3 bg-gray-50 rounded">
-                  <p className="text-sm text-gray-900">
-                    {selectedOrder.shippingAddress?.address}<br />
-                    {selectedOrder.shippingAddress?.city}, {selectedOrder.shippingAddress?.postalCode}<br />
-                    {selectedOrder.shippingAddress?.country}
-                  </p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Payment Method</label>
-                  <p className="text-sm text-gray-900">{selectedOrder.paymentMethod}</p>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Order Date</label>
-                  <p className="text-sm text-gray-900">{new Date(selectedOrder.createdAt).toLocaleString()}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

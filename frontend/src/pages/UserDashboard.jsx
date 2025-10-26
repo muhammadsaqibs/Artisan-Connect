@@ -63,7 +63,7 @@ export default function UserDashboard() {
             </div>
             <h4 className="font-semibold text-gray-900 mb-2">Book Service</h4>
             <p className="text-xs text-gray-500">Choose a provider and book your service</p>
-          </div>
+        </div>
           <div className="bg-white rounded-lg p-4 shadow-sm text-center">
             <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
               <Star className="w-6 h-6 text-green-600" />
@@ -78,8 +78,8 @@ export default function UserDashboard() {
             <h4 className="font-semibold text-gray-900 mb-2">Leave Review</h4>
             <p className="text-xs text-gray-500">Rate your experience to help others</p>
           </div>
+          </div>
         </div>
-      </div>
     </div>
   );
 }
