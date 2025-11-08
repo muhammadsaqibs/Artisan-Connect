@@ -12,3 +12,8 @@ router.post("/update-all", protect, admin, updateAllScores);
 
 export default router;
 
+
+
+
+
+

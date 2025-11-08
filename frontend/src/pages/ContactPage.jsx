@@ -4,11 +4,11 @@ export default function ContactPage() {
       <div className="max-w-7xl mx-auto px-4 py-16">
         {/* Header */}
         <h1 className="text-4xl font-extrabold text-center mb-6 bg-gradient-to-r from-cyan-300 to-white bg-clip-text text-transparent">
-          Contact <span className="text-white">Us</span>
+          Contact <span className="text-white">Artisan Connect</span>
         </h1>
         <p className="text-center text-gray-400 max-w-xl mx-auto text-lg">
-          Have questions or need help? Fill out the form below and our team 
-          will get back to you as soon as possible.
+          Have a question about hiring an artisan, selling your craft, or joining our community? 
+          Fill out the form below and our support team will reach out to you soon.
         </p>
 
         {/* Contact Form */}
@@ -16,19 +16,19 @@ export default function ContactPage() {
           <div className="grid md:grid-cols-2 gap-6">
             <input
               type="text"
-              placeholder="Full Name"
+              placeholder="Your Full Name"
               className="bg-black/20 border border-white/10 text-white placeholder-gray-400 rounded-lg px-4 py-2 focus:outline-none focus:border-cyan-400"
               required
             />
             <input
               type="email"
-              placeholder="Email Address"
+              placeholder="Your Email Address"
               className="bg-black/20 border border-white/10 text-white placeholder-gray-400 rounded-lg px-4 py-2 focus:outline-none focus:border-cyan-400"
               required
             />
           </div>
           <textarea
-            placeholder="Your Message"
+            placeholder="How can we help you? (e.g. artisan inquiry, service issue, feedback)"
             rows="5"
             className="mt-6 w-full bg-black/20 border border-white/10 text-white placeholder-gray-400 rounded-lg px-4 py-2 focus:outline-none focus:border-cyan-400"
             required
@@ -44,9 +44,19 @@ export default function ContactPage() {
 
         {/* Contact Info */}
         <div className="mt-12 text-center text-gray-400">
-          <p>📍 Karachi, Pakistan</p>
-          <p>📞 +92 300 1234567</p>
-          <p>📧 support@zepvistore.com</p>
+          <p>📍 Lahore, Pakistan</p>
+          <p>📞 +92 300 9876543</p>
+          <p>📧 support@artisanconnect.com</p>
+        </div>
+
+        {/* Additional Info */}
+        <div className="mt-6 text-center text-gray-500 text-sm">
+          <p>
+            Our team is available <span className="text-cyan-400 font-semibold">24/7</span> to assist artisans and customers.
+          </p>
+          <p>
+            You can also reach us via WhatsApp or visit our community support center.
+          </p>
         </div>
       </div>
     </div>

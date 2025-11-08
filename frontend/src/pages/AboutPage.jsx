@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 
-// Import images
+// Import images (replace with your own)
 import About6 from "../assets/About6.png";
 import About2 from "../assets/About2.png";
 import About3 from "../assets/About3.png";
@@ -12,17 +12,17 @@ export default function AboutPage() {
     {
       id: 1,
       image: About5,
-      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed dictum placerat diam eros eget ante suscipit porta sed sed elit.",
+      text: "Artisan Connect helped me find a verified electrician in minutes. The reliability score really builds confidence before booking!",
     },
     {
       id: 2,
       image: About2,
-      text: "Aenean tincidunt porta molestie. Nullam sed viverra magna, ut iaculis arcu. Pellentesque habitant morbi tristique senectus et netus.",
+      text: "Finally, a platform that connects you with nearby service providers who actually show up on time and deliver quality work.",
     },
     {
       id: 3,
       image: About3,
-      text: "Curabitur quis quam eget purus efficitur bibendum. Integer a est nec ligula blandit commodo ut sed ex.",
+      text: "As a local artisan, Artisan Connect gave me steady work opportunities and helped me build trust with new clients.",
     },
   ];
 
@@ -45,6 +45,9 @@ export default function AboutPage() {
           animate={{ scale: 1 }}
           transition={{ duration: 2 }}
         />
+        <h1 className="text-4xl md:text-6xl font-extrabold text-white relative z-10">
+          About Artisan Connect
+        </h1>
       </motion.div>
 
       {/* About Info Section */}
@@ -52,22 +55,27 @@ export default function AboutPage() {
         <div>
           <h2 className="text-2xl font-bold text-white">Who We Are</h2>
           <p className="mt-3 text-gray-400">
-            At ZepviStore, we bring the latest trends, unbeatable prices, and
-            unmatched shopping experience to our customers worldwide.
+            Artisan Connect is a trusted digital platform designed to connect
+            customers with verified local service providers such as plumbers,
+            electricians, and handymen. We believe in building a community of
+            reliability, safety, and transparency.
           </p>
         </div>
         <div>
-          <h2 className="text-2xl font-bold text-white">Our History</h2>
+          <h2 className="text-2xl font-bold text-white">Our Vision & History</h2>
           <p className="mt-3 text-gray-400">
-            Since 1990, we’ve been growing into a trusted platform for millions,
-            delivering excellence and building a community of happy clients.
+            The idea for Artisan Connect was born from everyday frustrations of
+            finding trustworthy local workers. Our team turned that problem into
+            a mission — to create a hyper-local network where every artisan is
+            recognized for skill and reliability, not just star ratings.
           </p>
         </div>
         <div>
           <h2 className="text-2xl font-bold text-white">Our Mission</h2>
           <p className="mt-3 text-gray-400">
-            Our mission is to make shopping simple, secure, and affordable,
-            while continuously innovating for the future.
+            Our mission is to simplify home service hiring through technology.
+            By introducing a data-driven “Reliability Score,” we empower users to
+            hire confidently and enable artisans to grow their local reputation.
           </p>
         </div>
       </div>
@@ -79,50 +87,47 @@ export default function AboutPage() {
             Our Performance
           </p>
           <h2 className="text-3xl md:text-4xl font-bold text-white">
-            We Believe In Quality Products
+            We Believe in Trust & Transparency
           </h2>
           <p className="text-gray-400">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-            pretium mollis ex, vel interdum augue faucibus sit amet. Proin
-            tempor purus ac suscipit sagittis. Nunc finibus euismod enim, eu
-            finibus nunc ullamcorper et.
+            Every booking, rating, and completion status on Artisan Connect feeds
+            into our backend Reliability Score system. This ensures fair,
+            data-driven trust for artisans — and peace of mind for customers.
+            Our MERN-based architecture guarantees quick searches, secure
+            transactions, and smooth performance.
           </p>
         </div>
         <div className="md:w-1/2">
-          <img
-            src={About6}
-            alt="Performance"
-            className="rounded-xl shadow-lg"
-          />
+          <img src={About6} alt="Performance" className="rounded-xl shadow-lg" />
         </div>
       </div>
 
       {/* Our Team Section */}
       <div className="max-w-7xl mx-auto px-6 py-16">
         <h2 className="text-3xl font-bold text-center mb-10 text-white">
-          Our Team
+          Meet the Creators
         </h2>
-        <div className="grid md:grid-cols-4 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {[
             {
               img: About2,
-              name: "John Hossain",
-              role: "CEO & Founder",
+              name: "Muhammad Saqib",
+              role: "Full-Stack Developer | SP23-BCS-116",
             },
             {
               img: About3,
-              name: "Jane Cooper",
-              role: "Market Development",
+              name: "Waqas Ali",
+              role: "Full-Stack Developer | SP23-BCS-096",
             },
             {
               img: "/src/assets/About4.png",
-              name: "Kristin Watson",
-              role: "Head Engineer",
+              name: "Dr. Waseem Akram",
+              role: "Project Supervisor",
             },
             {
               img: About5,
-              name: "Isabella",
-              role: "Marketing",
+              name: "Artisan Connect Team",
+              role: "Design & Backend Support",
             },
           ].map((member, idx) => (
             <motion.div
@@ -153,8 +158,6 @@ export default function AboutPage() {
           <p className="text-gray-300 text-lg md:text-xl mb-6">
             {testimonials[activeIndex].text}
           </p>
-
-          {/* Dots Navigation */}
           <div className="flex justify-center space-x-3">
             {testimonials.map((_, index) => (
               <button
