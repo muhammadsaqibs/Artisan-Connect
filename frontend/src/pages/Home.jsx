@@ -9,11 +9,11 @@ import Hero3 from "../assets/HeroSec3.jpeg";
 import Hero4 from "../assets/HeroSec4.jpeg";
 import Hero5 from "../assets/HeroSec5.jpeg";
 
-// 🧑‍🎨 Featured Artisan Images
-import artisan1 from "../assets/image4.jpg";
-import artisan2 from "../assets/image5.jpg";
-import artisan3 from "../assets/image6.jpg";
-import handmadeImg from "../assets/image7.jpg";
+// 👷‍♂️ Featured Professionals Images
+import Fe1 from "../assets/Fe1.png";
+import Fe2 from "../assets/Fe2.png";
+import Fe3 from "../assets/Fe3.png";
+import Fe4 from "../assets/Fe4.png";
 
 // 🛡 Trust badge images
 import customerSupport from "../assets/customer-support.png";
@@ -37,37 +37,42 @@ export default function Home() {
     {
       id: 1,
       image: Hero1,
-      title: "Empowering Local Artisans",
-      subtitle: "Handcrafted designs that tell a story of culture and passion",
-      buttonText: "Explore Artisans",
+      title: "Empowering Skilled Professionals Through Technology",
+      subtitle:
+        "Connect with verified local experts — electricians, plumbers, instructors, and engineers — all in one trusted platform.",
+      buttonText: "Find Experts",
     },
     {
       id: 2,
       image: Hero2,
-      title: "Beautiful Handmade Creations",
-      subtitle: "Crafted with love and care — made just for you",
-      buttonText: "Shop Now",
+      title: "Building Stronger Connections Between Talent and Opportunity",
+      subtitle:
+        "Our mission is to create digital visibility for skilled individuals, helping them reach the clients they deserve.",
+      buttonText: "Join as Service Provider",
     },
     {
       id: 3,
       image: Hero3,
-      title: "Connecting Art and Innovation",
-      subtitle: "Where traditional skills meet modern creativity",
-      buttonText: "Discover More",
+      title: "Smart Solutions for Real Professionals",
+      subtitle:
+        "Digitally showcase your skills, manage clients, and receive secure payments with ease.",
+      buttonText: "Get Started",
     },
     {
       id: 4,
       image: Hero4,
-      title: "Supporting Local Talent",
-      subtitle: "Empower artisans by buying authentic handmade products",
-      buttonText: "Join the Community",
+      title: "Trusted Services for Every Need",
+      subtitle:
+        "From household maintenance to professional training — Artisan Connect links customers with reliable experts.",
+      buttonText: "Explore Services",
     },
     {
       id: 5,
       image: Hero5,
-      title: "Custom Handmade Perfection",
-      subtitle: "Bring your imagination to life with personalized orders",
-      buttonText: "Request Custom Work",
+      title: "Digital Platform for the Workforce of Tomorrow",
+      subtitle:
+        "Creating employment and growth opportunities for professionals across every city and field.",
+      buttonText: "Be Part of the Network",
     },
   ];
 
@@ -83,7 +88,7 @@ export default function Home() {
   return (
     <div className="w-full min-h-screen bg-[#0b1020] text-white">
       {/* 🌅 HERO SECTION */}
-      <section className="relative w-full h-[60vh] md:h-[70vh] overflow-hidden">
+      <section className="relative w-full h-[60vh] md:h-[75vh] overflow-hidden">
         {slides.map((slide, index) => (
           <div
             key={slide.id}
@@ -94,11 +99,11 @@ export default function Home() {
             <img
               src={slide.image}
               alt={slide.title}
-              className="w-full h-full object-cover object-center md:object-fill"
+              className="w-full h-full object-cover object-center"
               loading="lazy"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/70 flex flex-col justify-center items-center text-center p-4 md:p-6">
-              <h1 className="text-2xl md:text-4xl font-extrabold mb-2 drop-shadow-lg">
+              <h1 className="text-2xl md:text-5xl font-extrabold mb-2 drop-shadow-lg">
                 {slide.title}
               </h1>
               <p className="text-base md:text-lg mb-4 text-gray-200 max-w-xl">
@@ -115,65 +120,70 @@ export default function Home() {
         ))}
       </section>
 
-      {/* 🧑‍🎨 FEATURED ARTISANS */}
+      {/* 👷 FEATURED PROFESSIONALS */}
       <section className="bg-gradient-to-b from-white to-gray-100 text-gray-900 py-16">
         <div className="container mx-auto px-6 lg:px-12">
           <h2 className="text-3xl font-bold mb-6 text-center">
-            Featured Artisans
+            Featured Professionals
           </h2>
+          <p className="text-center text-gray-600 mb-10 max-w-3xl mx-auto">
+            Explore our top-rated professionals providing trusted, high-quality services
+            across engineering, education, and maintenance fields.
+          </p>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
             {[
               {
-                id: "a1",
-                image: artisan1,
-                title: "Handcrafted Jewelry",
-                price: "Starting from $25",
+                id: "p1",
+                image: Fe1,
+                title: "Ahmed Raza",
+                role: "Certified Electrician | Karachi",
               },
               {
-                id: "a2",
-                image: artisan2,
-                title: "Woodwork & Furniture",
-                price: "Starting from $50",
+                id: "p2",
+                image: Fe2,
+                title: "Bilal Khan",
+                role: "Professional Plumber | Lahore",
               },
               {
-                id: "a3",
-                image: artisan3,
-                title: "Custom Pottery",
-                price: "Starting from $30",
+                id: "p3",
+                image: Fe3,
+                title: "Sara Ali",
+                role: "Building Instructor | Islamabad",
               },
               {
-                id: "a4",
-                image: handmadeImg,
-                title: "Home Decor & Crafts",
-                price: "Starting from $20",
+                id: "p4",
+                image: Fe4,
+                title: "Engr. Usman Ahmed",
+                role: "Civil Engineer | Multan",
               },
-            ].map((p) => (
+            ].map((pro) => (
               <div
-                key={p.id}
+                key={pro.id}
                 className="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-all text-center flex flex-col items-center"
               >
-                <div className="w-full h-48 flex items-center justify-center overflow-hidden rounded-lg">
+                <div className="w-full h-48 overflow-hidden rounded-lg">
                   <img
-                    src={p.image}
-                    alt={p.title}
+                    src={pro.image}
+                    alt={pro.title}
                     className="object-cover w-full h-full rounded-lg"
                   />
                 </div>
-                <h3 className="font-bold mt-3">{p.title}</h3>
-                <p className="text-indigo-600 font-semibold">{p.price}</p>
+                <h3 className="font-bold mt-3">{pro.title}</h3>
+                <p className="text-indigo-600 font-semibold">{pro.role}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 📰 NEWSLETTER */}
+      {/* 📰 COMMUNITY INVITE */}
       <section className="bg-indigo-600 py-12 text-center text-white">
         <h2 className="text-2xl font-bold mb-4">
           Join the Artisan Connect Community
         </h2>
         <p className="mb-6 text-gray-100">
-          Be the first to hear about new artisans, handmade collections, and offers.
+          Register today to promote your services, connect with clients, and grow your professional presence online.
         </p>
         <div className="flex justify-center max-w-md mx-auto">
           <input
@@ -182,7 +192,7 @@ export default function Home() {
             className="px-4 py-2 rounded-l-md outline-none text-black w-full"
           />
           <button className="bg-black text-white px-4 py-2 rounded-r-md hover:bg-gray-800">
-            Subscribe
+            Join Now
           </button>
         </div>
       </section>
@@ -191,10 +201,10 @@ export default function Home() {
       <section className="bg-gray-50 py-12">
         <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 text-center px-6">
           {[
-            { img: securePayment, text: "Secure Payments" },
-            { img: freeShipping, text: "Nationwide Delivery" },
-            { img: easyReturn, text: "Easy Order Cancellation" },
-            { img: customerSupport, text: "24/7 Support for Buyers & Artisans" },
+            { img: securePayment, text: "Secure Transactions" },
+            { img: freeShipping, text: "Reliable Service Access" },
+            { img: easyReturn, text: "Easy Job Management" },
+            { img: customerSupport, text: "24/7 Support & Verification" },
           ].map((badge) => (
             <div key={badge.text} className="flex flex-col items-center">
               <img src={badge.img} alt={badge.text} className="w-16 h-16 mb-4" />
@@ -207,7 +217,7 @@ export default function Home() {
       {/* 💳 PAYMENT METHODS */}
       <section className="bg-white py-12">
         <h2 className="text-2xl font-bold text-center mb-8 text-gray-800">
-          We Accept Multiple Payment Methods
+          Flexible and Secure Payment Options
         </h2>
         <div className="flex flex-wrap justify-center items-center gap-8 px-6">
           {[
@@ -221,7 +231,9 @@ export default function Home() {
           ].map((pm) => (
             <div key={pm.name} className="flex flex-col items-center">
               <img src={pm.img} alt={pm.name} className="h-12 object-contain" />
-              <p className="text-sm font-semibold mt-2 text-gray-600">{pm.name}</p>
+              <p className="text-sm font-semibold mt-2 text-gray-600">
+                {pm.name}
+              </p>
             </div>
           ))}
         </div>

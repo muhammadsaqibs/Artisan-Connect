@@ -1,5 +1,7 @@
-// Import single shared image
-import About1 from "../assets/About1.png";
+// Import blog images
+import Blog1 from "../assets/blog1.png";
+import Blog2 from "../assets/blog2.png";
+import Blog3 from "../assets/blog3.png";
 
 export default function BlogPage() {
   const blogPosts = [
@@ -7,22 +9,22 @@ export default function BlogPage() {
       id: 1,
       title: "Meet the Masters: Inspiring Artisan Stories",
       excerpt:
-        "Step into the world of craftsmanship and meet local artisans transforming tradition into timeless art. Discover their passion, process, and journey on Artisan Connect.",
-      image: About1,
+        "Discover local artisans transforming ideas into exceptional services. Learn about their journey, expertise, and how they make a difference through Artisan Connect.",
+      image: Blog1,
     },
     {
       id: 2,
       title: "How to Choose the Right Artisan for Your Project",
       excerpt:
-        "Whether it’s home décor, tailoring, or custom design — learn how to find and hire the perfect artisan using reliability scores, verified profiles, and authentic reviews.",
-      image: About1,
+        "Find and hire the perfect artisan for your project with confidence using verified profiles, reliability scores, and authentic reviews on Artisan Connect.",
+      image: Blog2,
     },
     {
       id: 3,
-      title: "Sustainable Craftsmanship: The Future of Handmade Work",
+      title: "Sustainable and Efficient Services: The Future of Artisans",
       excerpt:
-        "Explore how digital platforms like Artisan Connect are helping local artisans embrace eco-friendly materials and sustainable practices to preserve culture and craft.",
-      image: About1,
+        "Explore how digital platforms like Artisan Connect are helping local artisans improve efficiency, embrace modern practices, and deliver quality services.",
+      image: Blog3,
     },
   ];
 
@@ -30,35 +32,37 @@ export default function BlogPage() {
     <div className="min-h-screen bg-gradient-to-b from-gray-950 to-black text-gray-200">
       <div className="max-w-7xl mx-auto px-4 py-16">
         {/* Header */}
-        <h1 className="text-4xl md:text-5xl font-extrabold text-center mb-6 bg-gradient-to-r from-cyan-400 to-blue-300 bg-clip-text text-transparent">
-          Craft <span className="text-white">Insights</span> & Stories
+        <h1 className="text-4xl md:text-5xl font-extrabold text-center mb-4 bg-gradient-to-r from-cyan-400 to-blue-300 bg-clip-text text-transparent">
+          Insights & <span className="text-white">Stories</span>
         </h1>
-        <p className="text-center text-gray-400 max-w-2xl mx-auto text-lg">
-          Explore inspiring stories, tips, and guides from skilled artisans shaping the world of handmade excellence.
+        <p className="text-center text-gray-400 max-w-2xl mx-auto text-lg mb-12">
+          Explore inspiring stories, tips, and guides from skilled artisans shaping the future of services.
         </p>
 
         {/* Blog Grid */}
-        <div className="mt-16 grid md:grid-cols-3 gap-10">
+        <div className="mt-10 grid md:grid-cols-3 gap-8">
           {blogPosts.map((post) => (
             <div
               key={post.id}
-              className="group bg-white/5 border border-white/10 backdrop-blur-xl rounded-2xl overflow-hidden shadow-lg hover:shadow-cyan-500/20 hover:-translate-y-2 transition-all duration-300"
+              className="group bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl overflow-hidden shadow-lg hover:shadow-cyan-500/30 hover:-translate-y-2 transition-all duration-300"
             >
-              <div className="overflow-hidden">
+              {/* Image */}
+              <div className="overflow-hidden rounded-t-3xl">
                 <img
                   src={post.image}
                   alt={post.title}
-                  className="h-56 w-full object-cover transform group-hover:scale-105 transition-all duration-500"
+                  className="h-64 w-full object-cover transform group-hover:scale-105 transition-transform duration-500"
                 />
               </div>
-              <div className="p-6">
-                <h2 className="text-2xl font-semibold text-white mb-3 group-hover:text-cyan-300 transition">
-                  {post.title}
-                </h2>
-                <p className="text-gray-400 text-sm leading-relaxed">
-                  {post.excerpt}
-                </p>
-                <button className="mt-5 inline-flex items-center text-cyan-400 hover:text-cyan-300 font-medium transition">
+              {/* Content */}
+              <div className="p-6 flex flex-col justify-between h-full">
+                <div>
+                  <h2 className="text-2xl font-semibold text-white mb-3 group-hover:text-cyan-300 transition-colors">
+                    {post.title}
+                  </h2>
+                  <p className="text-gray-400 text-sm leading-relaxed">{post.excerpt}</p>
+                </div>
+                <button className="mt-6 inline-flex items-center text-cyan-400 hover:text-cyan-300 font-medium transition-colors">
                   Read More
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

@@ -43,7 +43,7 @@ export default function Footer() {
       </div>
 
       <div className="text-center text-gray-500 text-sm mt-10 border-t border-gray-800 pt-4">
-        © {new Date().getFullYear()} Zepvi. All rights reserved.
+        © {new Date().getFullYear()} ArtisanConnect. All rights reserved.
       </div>
     </footer>
   );
