@@ -52,3 +52,6 @@ export const updateAllScores = async (req, res) => {
 
 
 
+
+
+
