@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+  
+    "preview": "vite preview",
+    "build": "react-scripts build"
   },
   "dependencies": {
     "@stripe/react-stripe-js": "^3.9.0",

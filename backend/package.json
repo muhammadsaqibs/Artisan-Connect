@@ -7,8 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
-    "db:check": "node scripts/dbCheck.mjs",
-    "build":"npm run build"
+    "db:check": "node scripts/dbCheck.mjs"
+    
   },
   "keywords": [],
   "author": "",
