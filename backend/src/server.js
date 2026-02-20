@@ -48,7 +48,7 @@ app.use(express.json());
 // =====================
 // Allow local dev and Netlify frontend
 const allowedOrigins = [
-  "http://localhost:3000",                  // local dev
+                   // local dev
   "https://artisanconnects.netlify.app/"      // replace with your actual Netlify URL
 ];
 app.use(cors({
@@ -99,5 +99,5 @@ app.use(errorHandler);
 // =====================
 // Start server
 // =====================
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT ;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

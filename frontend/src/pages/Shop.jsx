@@ -1,3 +1,5 @@
+// top of file
+const API = import.meta.env.VITE_API_URL;
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -22,7 +24,7 @@ export default function Shop() {
           minPrice: minPrice || undefined,
           maxPrice: maxPrice || undefined,
         };
-        const { data } = await axios.get("http://localhost:5000/api/products", {
+        const { data } = await axios.get("API/api/products", {
           params,
           signal: controller.signal,
         });

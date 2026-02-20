@@ -1,3 +1,5 @@
+// top of file
+const API = import.meta.env.VITE_API_URL;
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import axios from "axios";
@@ -23,7 +25,7 @@ export default function ProfilePage() {
       formData.append("profilePicture", profilePicture);
 
       const response = await axios.put(
-        "http://localhost:5000/api/users/profile/picture",
+        "API/api/users/profile/picture",
         formData,
         {
           headers: {
@@ -67,7 +69,7 @@ export default function ProfilePage() {
           {/* Profile Picture Section */}
           <div className="text-center">
             <img
-              src={user.profilePicture ? (user.profilePicture.startsWith("http") ? user.profilePicture : `http://localhost:5000${user.profilePicture}`) : getPlaceholderImage(96)}
+              src={user.profilePicture ? (user.profilePicture.startsWith("http") ? user.profilePicture : `API${user.profilePicture}`) : getPlaceholderImage(96)}
               alt="Profile"
               className="w-24 h-24 rounded-full mx-auto object-cover mb-4 bg-gray-200"
               onError={(e) => {

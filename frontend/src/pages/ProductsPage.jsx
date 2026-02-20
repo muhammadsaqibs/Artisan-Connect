@@ -1,3 +1,5 @@
+// top of file
+const API = import.meta.env.VITE_API_URL;
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -5,7 +7,7 @@ import CategoryFilter from "../components/CategoryFilter";
 import { useCart } from "../context/CartContext";
 
 export default function ProductsPage() {
-  const API_BASE = "http://localhost:5000";
+  const API_BASE = "API";
   const { addToCart } = useCart();
   const { category, subcategory } = useParams();
   const [search, setSearch] = useState("");
@@ -19,7 +21,7 @@ export default function ProductsPage() {
     let ignore = false;
     (async () => {
       try {
-        const { data } = await axios.get("http://localhost:5000/api/categories");
+        const { data } = await axios.get("API/api/categories");
         if (!ignore) setCategories(data?.data || []);
       } catch {
         if (!ignore) setCategories([]);
@@ -38,7 +40,7 @@ export default function ProductsPage() {
         if (category) params.category = category;
         if (subcategory) params.subCategory = subcategory;
         if (search.trim()) params.keyword = search.trim();
-        const { data } = await axios.get("http://localhost:5000/api/products", { params, signal: controller.signal });
+        const { data } = await axios.get("API/api/products", { params, signal: controller.signal });
         setProducts(data?.data || []);
       } catch (e) {
         if (!axios.isCancel(e)) {

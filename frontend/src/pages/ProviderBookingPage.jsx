@@ -1,3 +1,5 @@
+// top of file
+const API = import.meta.env.VITE_API_URL;
 import { useEffect, useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
@@ -35,7 +37,7 @@ export default function ProviderBookingPage() {
     }
 
     axios
-      .get(`http://localhost:5000/api/providers/${id}`)
+      .get(`API/api/providers/${id}`)
       .then((res) => setProvider(res.data.data))
       .catch(() => setAlert({ type: "error", message: "Provider not found" }))
       .finally(() => setLoading(false));
@@ -78,7 +80,7 @@ export default function ProviderBookingPage() {
       };
 
       const { data } = await axios.post(
-        "http://localhost:5000/api/requests",
+        "API/api/requests",
         bookingData,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -124,7 +126,7 @@ export default function ProviderBookingPage() {
           <div className="bg-white rounded-xl shadow-lg p-6 sticky top-4">
             <div className="text-center mb-4">
               <img
-                src={provider.profilePicture ? (provider.profilePicture.startsWith("http") ? provider.profilePicture : `http://localhost:5000${provider.profilePicture}`) : getPlaceholderImage(96)}
+                src={provider.profilePicture ? (provider.profilePicture.startsWith("http") ? provider.profilePicture : `API${provider.profilePicture}`) : getPlaceholderImage(96)}
                 alt={provider.name}
                 className="w-24 h-24 rounded-full mx-auto object-cover mb-3 bg-gray-200"
                 onError={(e) => {

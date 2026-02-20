@@ -1,3 +1,5 @@
+// top of file
+const API = import.meta.env.VITE_API_URL;
 import { useState, useEffect } from "react";
 import { Calendar, Clock, MapPin, DollarSign, Star, X, Award } from "lucide-react";
 import { getPlaceholderImage } from "../utils/placeholders";
@@ -27,7 +29,7 @@ export default function ServiceBookingCard({ provider, onBook }) {
     const fetchReliabilityScore = async () => {
       try {
         setLoadingScore(true);
-        const response = await axios.get(`http://localhost:5000/api/reliability/${provider._id}`);
+        const response = await axios.get(`API/api/reliability/${provider._id}`);
         if (response.data.success) {
           setReliabilityScore(response.data.data.score);
         }
@@ -118,7 +120,7 @@ export default function ServiceBookingCard({ provider, onBook }) {
         <div className="p-6 border-b">
           <div className="flex items-center gap-4">
             <img
-              src={provider.profilePicture ? (provider.profilePicture.startsWith("http") ? provider.profilePicture : `http://localhost:5000${provider.profilePicture}`) : getPlaceholderImage(64)}
+              src={provider.profilePicture ? (provider.profilePicture.startsWith("http") ? provider.profilePicture : `API${provider.profilePicture}`) : getPlaceholderImage(64)}
               alt={provider.name}
               className="w-16 h-16 rounded-full object-cover bg-gray-200"
               onError={(e) => {
@@ -197,7 +199,7 @@ export default function ServiceBookingCard({ provider, onBook }) {
             <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <img
-                  src={provider.profilePicture ? (provider.profilePicture.startsWith("http") ? provider.profilePicture : `http://localhost:5000${provider.profilePicture}`) : getPlaceholderImage(40)}
+                  src={provider.profilePicture ? (provider.profilePicture.startsWith("http") ? provider.profilePicture : `API${provider.profilePicture}`) : getPlaceholderImage(40)}
                   alt={provider.name}
                   className="w-10 h-10 rounded-full object-cover bg-white"
                 />

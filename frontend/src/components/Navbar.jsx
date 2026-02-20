@@ -1,3 +1,5 @@
+// top of file
+const API = import.meta.env.VITE_API_URL;
 import { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Calendar, User, LogOut } from "lucide-react";
@@ -53,7 +55,7 @@ export default function Navbar() {
             <div className="relative group">
               <button className="flex items-center gap-3 px-4 py-2 bg-cyan-500 text-gray-900 rounded-full hover:bg-cyan-400 transition">
                 <img
-                  src={user.profilePicture ? (user.profilePicture.startsWith("http") ? user.profilePicture : `http://localhost:5000${user.profilePicture}`) : getPlaceholderImage(32)}
+                  src={user.profilePicture ? (user.profilePicture.startsWith("http") ? user.profilePicture : `API${user.profilePicture}`) : getPlaceholderImage(32)}
                   alt={user.name}
                   className="w-8 h-8 rounded-full object-cover bg-gray-200"
                   onError={(e) => {
@@ -146,7 +148,7 @@ export default function Navbar() {
               <div className="flex flex-col w-full">
                 <div className="flex items-center gap-3 mb-3 p-3 bg-gray-700 rounded-lg">
                   <img
-                    src={user.profilePicture ? (user.profilePicture.startsWith("http") ? user.profilePicture : `http://localhost:5000${user.profilePicture}`) : getPlaceholderImage(40)}
+                    src={user.profilePicture ? (user.profilePicture.startsWith("http") ? user.profilePicture : `API${user.profilePicture}`) : getPlaceholderImage(40)}
                     alt={user.name}
                     className="w-10 h-10 rounded-full object-cover bg-gray-200"
                     onError={(e) => {

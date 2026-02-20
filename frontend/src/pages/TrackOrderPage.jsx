@@ -1,3 +1,5 @@
+// top of file
+const API = import.meta.env.VITE_API_URL;
 import { useState } from "react";
 import axios from "axios";
 
@@ -14,9 +16,9 @@ export default function TrackServicePage() {
     setLoading(true);
     try {
       // Track service request by token first, then by Mongo _id
-      let { data } = await axios.get(`http://localhost:5000/api/services/track`, { params: { token: query.trim() } });
+      let { data } = await axios.get(`API/api/services/track`, { params: { token: query.trim() } });
       if (!data?.data && /^[0-9a-fA-F]{24}$/.test(query.trim())) {
-        const byId = await axios.get(`http://localhost:5000/api/services/track`, { params: { id: query.trim() } });
+        const byId = await axios.get(`API/api/services/track`, { params: { id: query.trim() } });
         data = byId.data;
       }
       if (data?.data) setResult(data.data);

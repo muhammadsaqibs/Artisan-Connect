@@ -1,3 +1,5 @@
+// top of file
+const API = import.meta.env.VITE_API_URL;
 import { useState } from "react";
 import axios from "axios";
 import { ToggleLeft, ToggleRight, CheckCircle, XCircle } from "lucide-react";
@@ -10,7 +12,7 @@ export default function ProviderAvailabilityToggle({ isAvailable, onToggle }) {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.put(
-        "http://localhost:5000/api/providers/availability",
+        "API/api/providers/availability",
         {},
         {
           headers: { Authorization: `Bearer ${token}` },

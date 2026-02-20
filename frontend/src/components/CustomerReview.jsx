@@ -1,3 +1,5 @@
+// top of file
+const API = import.meta.env.VITE_API_URL;
 import { useState } from "react";
 import { Star, Send } from "lucide-react";
 import axios from "axios";
@@ -15,7 +17,7 @@ export default function CustomerReview({ booking, onReviewSubmit }) {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.put(
-        `http://localhost:5000/api/bookings/${booking._id}/review`,
+        `API/api/bookings/${booking._id}/review`,
         {
           rating,
           review,

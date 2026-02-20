@@ -1,3 +1,5 @@
+// top of file
+const API = import.meta.env.VITE_API_URL;
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -14,7 +16,7 @@ export default function ProvidersPage() {
   useEffect(() => {
     setLoading(true);
     axios
-      .get("http://localhost:5000/api/providers")
+      .get("API/api/providers")
       .then((res) => setProviders(res.data.data || []))
       .catch(() => setProviders([]))
       .finally(() => setLoading(false));
@@ -29,7 +31,7 @@ export default function ProvidersPage() {
       }
 
       const response = await axios.post(
-        "http://localhost:5000/api/bookings",
+        "API/api/bookings",
         bookingData,
         {
           headers: { Authorization: `Bearer ${token}` },

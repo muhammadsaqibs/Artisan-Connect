@@ -1,3 +1,5 @@
+// top of file
+const API = import.meta.env.VITE_API_URL;
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "./AuthContext";
@@ -62,7 +64,7 @@ export function CartProvider({ children }) {
     }
 
     setCartItems((items) => {
-      const API_BASE = "http://localhost:5000";
+      const API_BASE = "API";
       const normalizedImage = item.image && (item.image.startsWith("http") ? item.image : `${API_BASE}${item.image}`);
       const idx = items.findIndex((i) => i.id === item.id);
 

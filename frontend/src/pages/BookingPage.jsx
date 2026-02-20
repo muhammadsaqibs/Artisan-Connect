@@ -1,3 +1,5 @@
+// top of file
+const API = import.meta.env.VITE_API_URL;
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -33,7 +35,7 @@ export default function BookingPage() {
 
   const fetchProvider = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/providers/${providerId}`);
+      const response = await axios.get(`API/api/providers/${providerId}`);
       if (response.data.success) {
         setProvider(response.data.data);
       }
@@ -101,7 +103,7 @@ export default function BookingPage() {
       };
 
       const response = await axios.post(
-        "http://localhost:5000/api/bookings",
+        "API/api/bookings",
         bookingData,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -185,7 +187,7 @@ export default function BookingPage() {
             <div className="bg-white rounded-xl shadow-lg p-6 sticky top-4">
               <div className="text-center mb-6">
                 <img
-                  src={provider.profilePicture ? (provider.profilePicture.startsWith("http") ? provider.profilePicture : `http://localhost:5000${provider.profilePicture}`) : getPlaceholderImage(96)}
+                  src={provider.profilePicture ? (provider.profilePicture.startsWith("http") ? provider.profilePicture : `API${provider.profilePicture}`) : getPlaceholderImage(96)}
                   alt={provider.name}
                   className="w-24 h-24 rounded-full mx-auto object-cover bg-gray-200 mb-4"
                   onError={(e) => {

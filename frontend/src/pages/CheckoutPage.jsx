@@ -1,3 +1,5 @@
+// top of file
+const API = import.meta.env.VITE_API_URL;
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { loadStripe } from "@stripe/stripe-js";
@@ -27,7 +29,7 @@ export default function CheckoutPage() {
       return null;
     }
     const { data: order } = await axios.post(
-      "http://localhost:5000/api/orders",
+      "API/api/orders",
       {
         orderItems: cart.map((c) => ({ name: c.name, qty: c.qty, price: c.price, image: c.image })),
         shippingAddress: shipping,
@@ -44,7 +46,7 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     const load = async () => {
-      const { data } = await axios.get("http://localhost:5000/api/config/paypal");
+      const { data } = await axios.get("API/api/config/paypal");
       setPaypalClientId(data.clientId || "");
       if (data.clientId) {
         const script = document.createElement("script");
@@ -54,7 +56,7 @@ export default function CheckoutPage() {
         document.body.appendChild(script);
       }
       // Stripe config
-      const stripeCfg = await axios.get("http://localhost:5000/api/config/stripe");
+      const stripeCfg = await axios.get("API/api/config/stripe");
       if (stripeCfg.data.publishableKey) {
         setStripePromise(loadStripe(stripeCfg.data.publishableKey));
       }
@@ -69,7 +71,7 @@ export default function CheckoutPage() {
       if (!created) return;
       // Initiate PayPal order
       const { data: pp } = await axios.post(
-        "http://localhost:5000/api/payments/paypal/create-order",
+        "API/api/payments/paypal/create-order",
         { total }
       );
       const orderId = pp.id;
@@ -87,7 +89,7 @@ export default function CheckoutPage() {
 
   const handleCOD = async () => {
     try {
-      await axios.post("http://localhost:5000/api/payments/cod", { total });
+      await axios.post("API/api/payments/cod", { total });
       const created = await placeOrder("COD");
       if (created) alert(`COD order placed! Order #${created._id}`);
     } catch (e) {
@@ -100,7 +102,7 @@ export default function CheckoutPage() {
       // Place order first so it exists even if Stripe isn't configured
       const created = await placeOrder("Stripe", { status: "INITIATED" });
       if (!created) return;
-      const { data } = await axios.post("http://localhost:5000/api/payments/stripe/create-payment-intent", {
+      const { data } = await axios.post("API/api/payments/stripe/create-payment-intent", {
         total,
       });
       setStripeClientSecret(data.clientSecret);
@@ -188,7 +190,7 @@ export default function CheckoutPage() {
                 try {
                   const created = await placeOrder("Bitcoin", { status: "INITIATED" });
                   if (!created) return;
-                  const { data } = await axios.post("http://localhost:5000/api/payments/bitcoin/create-invoice", { total });
+                  const { data } = await axios.post("API/api/payments/bitcoin/create-invoice", { total });
                   const hosted = data?.data?.hosted_url || data?.hosted_url;
                   const chargeId = data?.data?.id || data?.id;
                   if (hosted) {
@@ -212,7 +214,7 @@ export default function CheckoutPage() {
                 try {
                   const created = await placeOrder("Easypaisa", { status: "INITIATED" });
                   if (!created) return;
-                  const { data } = await axios.post("http://localhost:5000/api/payments/easypaisa/create-charge", { total });
+                  const { data } = await axios.post("API/api/payments/easypaisa/create-charge", { total });
                   const ref = data.reference || data.status;
                   alert(`Order #${created._id} created. Easypaisa charge: ${ref}`);
                 } catch (e) {
@@ -230,7 +232,7 @@ export default function CheckoutPage() {
                 try {
                   const created = await placeOrder("Bank Transfer", { status: "INITIATED" });
                   if (!created) return;
-                  const { data } = await axios.post("http://localhost:5000/api/payments/bank/initiate", { total });
+                  const { data } = await axios.post("API/api/payments/bank/initiate", { total });
                   alert(`Order #${created._id} created. Bank transfer: ${data.instructions.bankName}, Account: ${data.instructions.accountNumber}`);
                 } catch (e) {
                   alert("Bank transfer initiation failed, but order has been placed.");

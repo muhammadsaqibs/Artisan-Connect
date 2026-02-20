@@ -11,6 +11,8 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
   const onChange = (e) => {
     const { name, value } = e.target;
     setForm((f) => ({ ...f, [name]: value }));
@@ -30,18 +32,26 @@ export default function LoginPage() {
 
     setLoading(true);
     try {
-      const { data } = await axios.post("http://localhost:5000/api/users/login", {
-        email: form.email.trim().toLowerCase(),
-        password: form.password,
-      });
+      const { data } = await axios.post(
+        `${API_URL}/api/users/login`,
+        {
+          email: form.email.trim().toLowerCase(),
+          password: form.password,
+        }
+      );
 
       login(data);
       setAlert({ type: "success", message: "Login successful!" });
 
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
+
     } catch (err) {
       setAlert({
         type: "error",
-        message: err?.response?.data?.message || "Login failed. Please try again.",
+        message:
+          err?.response?.data?.message || "Login failed. Please try again.",
       });
     } finally {
       setLoading(false);
@@ -51,15 +61,21 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-16 bg-gradient-to-br from-indigo-900 via-blue-800 to-purple-900">
       {alert && (
-        <div className={`fixed top-4 left-1/2 transform -translate-x-1/2 px-6 py-3 rounded-lg shadow-lg z-50 ${
-          alert.type === "success" ? "bg-green-500 text-white" : "bg-red-500 text-white"
-        }`}>
+        <div
+          className={`fixed top-4 left-1/2 transform -translate-x-1/2 px-6 py-3 rounded-lg shadow-lg z-50 ${
+            alert.type === "success"
+              ? "bg-green-500 text-white"
+              : "bg-red-500 text-white"
+          }`}
+        >
           {alert.message}
         </div>
       )}
 
       <div className="bg-white shadow-2xl rounded-2xl w-full max-w-md p-8">
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Login</h2>
+        <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
+          Login
+        </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -72,7 +88,9 @@ export default function LoginPage() {
               className="w-full border rounded-lg px-3 py-2"
               placeholder="Enter your email"
             />
-            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+            {errors.email && (
+              <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+            )}
           </div>
 
           <div>
@@ -85,7 +103,11 @@ export default function LoginPage() {
               className="w-full border rounded-lg px-3 py-2"
               placeholder="Enter your password"
             />
-            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
+            {errors.password && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.password}
+              </p>
+            )}
           </div>
 
           <button
@@ -109,8 +131,3 @@ export default function LoginPage() {
     </div>
   );
 }
-
-
-
-
-

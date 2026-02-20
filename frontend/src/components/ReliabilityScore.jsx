@@ -1,3 +1,5 @@
+// top of file
+const API = import.meta.env.VITE_API_URL;
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { TrendingUp, Clock, CheckCircle, Star, Award } from "lucide-react";
@@ -14,7 +16,7 @@ export default function ReliabilityScore({ providerId }) {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        `http://localhost:5000/api/reliability/${providerId}`,
+        `API/api/reliability/${providerId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

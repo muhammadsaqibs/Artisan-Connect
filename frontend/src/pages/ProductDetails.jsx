@@ -1,3 +1,5 @@
+// top of file
+const API = import.meta.env.VITE_API_URL;
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useCart } from "../context/CartContext.jsx";
@@ -8,7 +10,7 @@ export default function ProductDetails() {
   const { addToCart, bookNow } = useCart();
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/products/${id}`)
+    fetch(`API/api/products/${id}`)
       .then((res) => res.json())
       .then((data) => setProduct(data.data || data))
       .catch((err) => console.error("Error fetching product details:", err));

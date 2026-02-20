@@ -1,4 +1,6 @@
 
+// top of file
+const API = import.meta.env.VITE_API_URL;
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Alert from "../components/Alert.jsx";
@@ -28,8 +30,8 @@ export default function AdminDashboard() {
     setLoading(true);
     try {
       const [{ data: p }, { data: c }] = await Promise.all([
-        axios.get("http://localhost:5000/api/providers"),
-        axios.get("http://localhost:5000/api/categories"),
+        axios.get("API/api/providers"),
+        axios.get("API/api/categories"),
       ]);
       setProviders(p.data || []);
       setCategories(c.data || []);
@@ -59,7 +61,7 @@ export default function AdminDashboard() {
     const name = e.currentTarget.elements.catname.value.trim();
     if (!name) return;
     try {
-      const { data } = await axios.post("http://localhost:5000/api/categories", { name }, { headers: authHeaders });
+      const { data } = await axios.post("API/api/categories", { name }, { headers: authHeaders });
       const newCat = data?.data;
       showAlert("success", `Category \"${name}\" added successfully`);
       // Preselect for subcategory form
@@ -79,7 +81,7 @@ export default function AdminDashboard() {
     const name = e.currentTarget.elements.sub.value.trim();
     if (!categoryId || !name) return;
     try {
-      await axios.post(`http://localhost:5000/api/categories/${categoryId}/sub`, { name }, { headers: authHeaders });
+      await axios.post(`API/api/categories/${categoryId}/sub`, { name }, { headers: authHeaders });
       showAlert("success", `Subcategory \"${name}\" added successfully`);
       setSubCatCategoryId(categoryId);
       safeRefresh();
@@ -93,7 +95,7 @@ export default function AdminDashboard() {
   const deleteProduct = async (id) => {
     if (!confirm("Are you sure you want to delete this product?")) return;
     try {
-      const response = await axios.delete(`http://localhost:5000/api/products/${id}`, { headers: authHeaders });
+      const response = await axios.delete(`API/api/products/${id}`, { headers: authHeaders });
       if (response.data.success) {
         await fetchData();
         showAlert("success", "Product deleted successfully!");
@@ -107,7 +109,7 @@ export default function AdminDashboard() {
 
   const handleDeleteCategory = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/categories/${id}`, { headers: authHeaders });
+      await axios.delete(`API/api/categories/${id}`, { headers: authHeaders });
       showAlert("success", "Category deleted");
       fetchData();
     } catch (err) {
@@ -117,7 +119,7 @@ export default function AdminDashboard() {
 
   const handleDeleteSubcategory = async (categoryId, subId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/categories/${categoryId}/sub/${subId}`, { headers: authHeaders });
+      await axios.delete(`API/api/categories/${categoryId}/sub/${subId}`, { headers: authHeaders });
       showAlert("success", "Subcategory removed");
       fetchData();
     } catch (err) {
@@ -298,7 +300,7 @@ export default function AdminDashboard() {
                           <tr key={p._id} className="border-b hover:bg-gray-50">
                             <td className="py-2">
                               <img 
-                                src={p.profilePicture ? (p.profilePicture.startsWith("http") ? p.profilePicture : `http://localhost:5000${p.profilePicture}`) : getPlaceholderImage(48)} 
+                                src={p.profilePicture ? (p.profilePicture.startsWith("http") ? p.profilePicture : `API${p.profilePicture}`) : getPlaceholderImage(48)} 
                                 alt={p.name} 
                                 className="w-12 h-12 rounded object-cover bg-gray-200" 
                                 onError={(e) => {
@@ -342,8 +344,8 @@ export default function AdminDashboard() {
                             </td>
                             <td className="py-2">
                               <div className="flex items-center gap-2">
-                                <button onClick={async()=>{ await axios.patch(`http://localhost:5000/api/providers/${p._id}/verify`, { status: 'verified' }, { headers: authHeaders }); safeRefresh(); showAlert('success','Provider verified'); }} className="text-green-600" title="Verify"><CheckCircle className="w-5 h-5"/></button>
-                                <button onClick={async()=>{ await axios.patch(`http://localhost:5000/api/providers/${p._id}/verify`, { status: 'unverified' }, { headers: authHeaders }); safeRefresh(); showAlert('success','Provider unverified'); }} className="text-red-600" title="Unverify"><XCircle className="w-5 h-5"/></button>
+                                <button onClick={async()=>{ await axios.patch(`API/api/providers/${p._id}/verify`, { status: 'verified' }, { headers: authHeaders }); safeRefresh(); showAlert('success','Provider verified'); }} className="text-green-600" title="Verify"><CheckCircle className="w-5 h-5"/></button>
+                                <button onClick={async()=>{ await axios.patch(`API/api/providers/${p._id}/verify`, { status: 'unverified' }, { headers: authHeaders }); safeRefresh(); showAlert('success','Provider unverified'); }} className="text-red-600" title="Unverify"><XCircle className="w-5 h-5"/></button>
                               </div>
                             </td>
                           </tr>

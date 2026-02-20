@@ -15,6 +15,8 @@ export default function SignupPage() {
   const [alert, setAlert] = useState(null);
   const navigate = useNavigate();
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
   const onChange = (e) => {
     const { name, value } = e.target;
     setForm((f) => ({ ...f, [name]: value }));
@@ -25,8 +27,10 @@ export default function SignupPage() {
     if (!form.name.trim()) err.name = "Name is required";
     if (!form.email.trim()) err.email = "Email is required";
     if (!form.password) err.password = "Password is required";
-    if (form.password.length < 6) err.password = "Password must be at least 6 characters";
-    if (form.password !== form.confirmPassword) err.confirmPassword = "Passwords do not match";
+    if (form.password.length < 6)
+      err.password = "Password must be at least 6 characters";
+    if (form.password !== form.confirmPassword)
+      err.confirmPassword = "Passwords do not match";
     setErrors(err);
     return Object.keys(err).length === 0;
   };
@@ -37,14 +41,18 @@ export default function SignupPage() {
 
     setLoading(true);
     try {
-      const { data } = await axios.post("http://localhost:5000/api/users", {
+      const { data } = await axios.post(`${API_URL}/api/users`, {
         name: form.name.trim(),
         email: form.email.trim().toLowerCase(),
         password: form.password,
         role: form.role,
       });
 
-      setAlert({ type: "success", message: "Signup successful! Redirecting..." });
+      setAlert({
+        type: "success",
+        message: "Signup successful! Redirecting...",
+      });
+
       setTimeout(() => {
         if (form.role === "provider") {
           navigate("/provider-onboarding");
@@ -52,11 +60,11 @@ export default function SignupPage() {
           navigate("/login");
         }
       }, 1200);
-
     } catch (err) {
       setAlert({
         type: "error",
-        message: err?.response?.data?.message || "Signup failed. Please try again.",
+        message:
+          err?.response?.data?.message || "Signup failed. Please try again.",
       });
     } finally {
       setLoading(false);
@@ -66,15 +74,21 @@ export default function SignupPage() {
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-16 bg-gradient-to-br from-indigo-900 via-blue-800 to-purple-900">
       {alert && (
-        <div className={`fixed top-4 left-1/2 transform -translate-x-1/2 px-6 py-3 rounded-lg shadow-lg z-50 ${
-          alert.type === "success" ? "bg-green-500 text-white" : "bg-red-500 text-white"
-        }`}>
+        <div
+          className={`fixed top-4 left-1/2 transform -translate-x-1/2 px-6 py-3 rounded-lg shadow-lg z-50 ${
+            alert.type === "success"
+              ? "bg-green-500 text-white"
+              : "bg-red-500 text-white"
+          }`}
+        >
           {alert.message}
         </div>
       )}
 
       <div className="bg-white shadow-2xl rounded-2xl w-full max-w-md p-8">
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Sign Up</h2>
+        <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
+          Sign Up
+        </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -87,7 +101,9 @@ export default function SignupPage() {
               className="w-full border rounded-lg px-3 py-2"
               placeholder="Enter your name"
             />
-            {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+            {errors.name && (
+              <p className="text-red-500 text-sm mt-1">{errors.name}</p>
+            )}
           </div>
 
           <div>
@@ -100,7 +116,9 @@ export default function SignupPage() {
               className="w-full border rounded-lg px-3 py-2"
               placeholder="Enter your email"
             />
-            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+            {errors.email && (
+              <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+            )}
           </div>
 
           <div>
@@ -113,11 +131,15 @@ export default function SignupPage() {
               className="w-full border rounded-lg px-3 py-2"
               placeholder="Enter your password"
             />
-            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
+            {errors.password && (
+              <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+            )}
           </div>
 
           <div>
-            <label className="block text-gray-700 mb-2">Confirm Password</label>
+            <label className="block text-gray-700 mb-2">
+              Confirm Password
+            </label>
             <input
               type="password"
               name="confirmPassword"
@@ -126,15 +148,23 @@ export default function SignupPage() {
               className="w-full border rounded-lg px-3 py-2"
               placeholder="Confirm your password"
             />
-            {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>}
+            {errors.confirmPassword && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.confirmPassword}
+              </p>
+            )}
           </div>
 
           <div>
-            <label className="block text-gray-700 mb-2 font-semibold">I want to</label>
+            <label className="block text-gray-700 mb-2 font-semibold">
+              I want to
+            </label>
             <div className="grid grid-cols-2 gap-3">
               <button
                 type="button"
-                onClick={() => setForm(f => ({ ...f, role: "customer" }))}
+                onClick={() =>
+                  setForm((f) => ({ ...f, role: "customer" }))
+                }
                 className={`py-3 px-4 rounded-lg border-2 transition-all ${
                   form.role === "customer"
                     ? "border-indigo-600 bg-indigo-50 text-indigo-700 font-semibold"
@@ -145,7 +175,9 @@ export default function SignupPage() {
               </button>
               <button
                 type="button"
-                onClick={() => setForm(f => ({ ...f, role: "provider" }))}
+                onClick={() =>
+                  setForm((f) => ({ ...f, role: "provider" }))
+                }
                 className={`py-3 px-4 rounded-lg border-2 transition-all ${
                   form.role === "provider"
                     ? "border-indigo-600 bg-indigo-50 text-indigo-700 font-semibold"
@@ -183,8 +215,3 @@ export default function SignupPage() {
     </div>
   );
 }
-
-
-
-
-

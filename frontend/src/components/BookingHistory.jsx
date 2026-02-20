@@ -1,3 +1,5 @@
+// top of file
+const API = import.meta.env.VITE_API_URL;
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Calendar, Clock, MapPin, DollarSign, User, Phone, Star, CheckCircle, XCircle, AlertCircle } from "lucide-react";
@@ -16,7 +18,7 @@ export default function BookingHistory() {
   const fetchBookings = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get("http://localhost:5000/api/bookings/customer", {
+      const response = await axios.get("API/api/bookings/customer", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setBookings(response.data.data);
@@ -111,7 +113,7 @@ export default function BookingHistory() {
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-4">
                   <img
-                    src={booking.provider.profilePicture ? (booking.provider.profilePicture.startsWith("http") ? booking.provider.profilePicture : `http://localhost:5000${booking.provider.profilePicture}`) : getPlaceholderImage(48)}
+                    src={booking.provider.profilePicture ? (booking.provider.profilePicture.startsWith("http") ? booking.provider.profilePicture : `API${booking.provider.profilePicture}`) : getPlaceholderImage(48)}
                     alt={booking.provider.name}
                     className="w-12 h-12 rounded-full object-cover bg-gray-200"
                     onError={(e) => {

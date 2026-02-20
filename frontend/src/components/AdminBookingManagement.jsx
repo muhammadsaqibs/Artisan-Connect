@@ -1,3 +1,5 @@
+// top of file
+const API = import.meta.env.VITE_API_URL;
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Calendar, Clock, MapPin, DollarSign, User, CheckCircle, XCircle, Eye } from "lucide-react";
@@ -21,7 +23,7 @@ export default function AdminBookingManagement() {
       if (filter !== "all") params.append("status", filter);
       
       const response = await axios.get(
-        `http://localhost:5000/api/bookings/admin?${params}`,
+        `API/api/bookings/admin?${params}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -38,7 +40,7 @@ export default function AdminBookingManagement() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.put(
-        `http://localhost:5000/api/bookings/${bookingId}/verify`,
+        `API/api/bookings/${bookingId}/verify`,
         { isVerified, notes },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -157,7 +159,7 @@ export default function AdminBookingManagement() {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       <img
-                        src={booking.provider.profilePicture ? (booking.provider.profilePicture.startsWith("http") ? booking.provider.profilePicture : `http://localhost:5000${booking.provider.profilePicture}`) : getPlaceholderImage(40)}
+                        src={booking.provider.profilePicture ? (booking.provider.profilePicture.startsWith("http") ? booking.provider.profilePicture : `API${booking.provider.profilePicture}`) : getPlaceholderImage(40)}
                         alt={booking.provider.name}
                         className="h-10 w-10 rounded-full object-cover bg-gray-200"
                         onError={(e) => {

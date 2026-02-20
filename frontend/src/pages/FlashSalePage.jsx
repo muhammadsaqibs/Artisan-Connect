@@ -1,3 +1,5 @@
+// top of file
+const API = import.meta.env.VITE_API_URL;
 import { useState, useEffect } from "react";
 import Slider from "react-slick";
 import axios from "axios";
@@ -37,9 +39,9 @@ export default function FlashSalePage() {
     const controller = new AbortController();
     (async () => {
       try {
-        const { data } = await axios.get("http://localhost:5000/api/products", { params: { flashSale: true }, signal: controller.signal });
+        const { data } = await axios.get("API/api/products", { params: { flashSale: true }, signal: controller.signal });
         const items = (data?.data || []);
-        setFlashDeals(items.map(p => ({ id: p._id, title: p.name, price: p.price, image: p.image?.startsWith("http") ? p.image : `http://localhost:5000${p.image || ""}`, endsAt: p.flashSaleEndsAt })));
+        setFlashDeals(items.map(p => ({ id: p._id, title: p.name, price: p.price, image: p.image?.startsWith("http") ? p.image : `API${p.image || ""}`, endsAt: p.flashSaleEndsAt })));
         const ends = items
           .map(p => p.flashSaleEndsAt ? (typeof p.flashSaleEndsAt === 'number' ? p.flashSaleEndsAt : new Date(p.flashSaleEndsAt).getTime()) : 0)
           .filter(ts => Number.isFinite(ts) && ts > Date.now());
