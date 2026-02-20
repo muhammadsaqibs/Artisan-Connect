@@ -1,5 +1,5 @@
 // top of file
-const API = import.meta.env.VITE_API_URL;
+const API = import.meta.env.VITE_API_URL || 'https://artisan-connect-production.up.railway.app';
 import { useState, useEffect } from "react";
 import { Calendar, Clock, MapPin, DollarSign, Star, X, Award } from "lucide-react";
 import { getPlaceholderImage } from "../utils/placeholders";

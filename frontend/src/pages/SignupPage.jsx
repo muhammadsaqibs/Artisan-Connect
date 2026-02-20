@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { AuthContext } from "../context/AuthContext";
 
 export default function SignupPage() {
   const [form, setForm] = useState({
@@ -14,6 +15,7 @@ export default function SignupPage() {
   const [loading, setLoading] = useState(false);
   const [alert, setAlert] = useState(null);
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   const API_URL = import.meta.env.VITE_API_URL || 'https://artisan-connect-production.up.railway.app';
 
@@ -50,16 +52,11 @@ export default function SignupPage() {
 
       setAlert({
         type: "success",
-        message: "Signup successful! Redirecting...",
+        message: "Signup successful! Auto-logging in...",
       });
 
-      setTimeout(() => {
-        if (form.role === "provider") {
-          navigate("/provider-onboarding");
-        } else {
-          navigate("/login");
-        }
-      }, 1200);
+      // Auto-login the new user
+      login(data);
     } catch (err) {
       setAlert({
         type: "error",
