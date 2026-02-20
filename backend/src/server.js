@@ -48,11 +48,20 @@ app.use(express.json());
 // =====================
 // Allow local dev and Netlify frontend
 const allowedOrigins = [
-                   // local dev
-  "https://artisanconnects.netlify.app/"      // replace with your actual Netlify URL
+  // local dev
+  "http://localhost:5173",
+  "http://localhost:3000",
+  // Netlify production frontend (no trailing slash)
+  "https://artisanconnects.netlify.app",
 ];
+
 app.use(cors({
-  origin: allowedOrigins,
+  origin: (origin, callback) => {
+    // Allow requests with no origin (e.g., mobile apps, curl)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    return callback(null, false);
+  },
   credentials: true,
 }));
 
