@@ -1,12 +1,12 @@
 
-// top of file
-const API = import.meta.env.VITE_API_URL;
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Alert from "../components/Alert.jsx";
 import { Eye, Package, Users, CheckCircle, XCircle, Calendar, BookOpen } from "lucide-react";
 import { getPlaceholderImage } from "../utils/placeholders";
 import AdminBookingManagement from "../components/AdminBookingManagement";
+
+const API = import.meta.env.VITE_API_URL || 'https://artisan-connect-production.up.railway.app';
 
 export default function AdminDashboard() {
   const token = localStorage.getItem("token");
@@ -30,8 +30,8 @@ export default function AdminDashboard() {
     setLoading(true);
     try {
       const [{ data: p }, { data: c }] = await Promise.all([
-        axios.get("API/api/providers"),
-        axios.get("API/api/categories"),
+        axios.get(`${API}/api/providers`),
+        axios.get(`${API}/api/categories`),
       ]);
       setProviders(p.data || []);
       setCategories(c.data || []);
@@ -61,7 +61,7 @@ export default function AdminDashboard() {
     const name = e.currentTarget.elements.catname.value.trim();
     if (!name) return;
     try {
-      const { data } = await axios.post("API/api/categories", { name }, { headers: authHeaders });
+      const { data } = await axios.post(`${API}/api/categories`, { name }, { headers: authHeaders });
       const newCat = data?.data;
       showAlert("success", `Category \"${name}\" added successfully`);
       // Preselect for subcategory form
@@ -81,7 +81,7 @@ export default function AdminDashboard() {
     const name = e.currentTarget.elements.sub.value.trim();
     if (!categoryId || !name) return;
     try {
-      await axios.post(`API/api/categories/${categoryId}/sub`, { name }, { headers: authHeaders });
+      await axios.post(`${API}/api/categories/${categoryId}/sub`, { name }, { headers: authHeaders });
       showAlert("success", `Subcategory \"${name}\" added successfully`);
       setSubCatCategoryId(categoryId);
       safeRefresh();
@@ -95,7 +95,7 @@ export default function AdminDashboard() {
   const deleteProduct = async (id) => {
     if (!confirm("Are you sure you want to delete this product?")) return;
     try {
-      const response = await axios.delete(`API/api/products/${id}`, { headers: authHeaders });
+      const response = await axios.delete(`${API}/api/products/${id}`, { headers: authHeaders });
       if (response.data.success) {
         await fetchData();
         showAlert("success", "Product deleted successfully!");
@@ -109,7 +109,7 @@ export default function AdminDashboard() {
 
   const handleDeleteCategory = async (id) => {
     try {
-      await axios.delete(`API/api/categories/${id}`, { headers: authHeaders });
+      await axios.delete(`${API}/api/categories/${id}`, { headers: authHeaders });
       showAlert("success", "Category deleted");
       fetchData();
     } catch (err) {
