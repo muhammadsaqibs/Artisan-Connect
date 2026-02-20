@@ -15,7 +15,7 @@ export default function SignupPage() {
   const [alert, setAlert] = useState(null);
   const navigate = useNavigate();
 
-  const API_URL = import.meta.env.VITE_API_URL;
+  const API_URL = import.meta.env.VITE_API_URL || 'https://artisan-connect-production.up.railway.app';
 
   const onChange = (e) => {
     const { name, value } = e.target;
