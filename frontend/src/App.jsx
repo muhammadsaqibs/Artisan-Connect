@@ -64,6 +64,8 @@ export default function App() {
         
         {/* Providers Directory */}
         <Route path="/providers" element={<TitleWrapper title="Providers"><ProvidersPage /></TitleWrapper>} />
+        {/* Backwards-compatible route from older builds */}
+        <Route path="/artisans" element={<TitleWrapper title="Providers"><ProvidersPage /></TitleWrapper>} />
         
         {/* Book Provider */}
         <Route path="/book-provider/:id" element={<TitleWrapper title="Book Service"><ProtectedRoute><BookingPage /></ProtectedRoute></TitleWrapper>} />

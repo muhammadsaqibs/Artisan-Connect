@@ -344,8 +344,8 @@ export default function AdminDashboard() {
                             </td>
                             <td className="py-2">
                               <div className="flex items-center gap-2">
-                                <button onClick={async()=>{ await axios.patch(`API/api/providers/${p._id}/verify`, { status: 'verified' }, { headers: authHeaders }); safeRefresh(); showAlert('success','Provider verified'); }} className="text-green-600" title="Verify"><CheckCircle className="w-5 h-5"/></button>
-                                <button onClick={async()=>{ await axios.patch(`API/api/providers/${p._id}/verify`, { status: 'unverified' }, { headers: authHeaders }); safeRefresh(); showAlert('success','Provider unverified'); }} className="text-red-600" title="Unverify"><XCircle className="w-5 h-5"/></button>
+                                <button onClick={async()=>{ await axios.patch(`${API}/api/providers/${p._id}/verify`, { status: 'verified' }, { headers: authHeaders }); safeRefresh(); showAlert('success','Provider verified'); }} className="text-green-600" title="Verify"><CheckCircle className="w-5 h-5"/></button>
+                                <button onClick={async()=>{ await axios.patch(`${API}/api/providers/${p._id}/verify`, { status: 'unverified' }, { headers: authHeaders }); safeRefresh(); showAlert('success','Provider unverified'); }} className="text-red-600" title="Unverify"><XCircle className="w-5 h-5"/></button>
                               </div>
                             </td>
                           </tr>

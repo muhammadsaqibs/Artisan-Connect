@@ -35,7 +35,7 @@ export default function BookingPage() {
 
   const fetchProvider = async () => {
     try {
-      const response = await axios.get(`API/api/providers/${providerId}`);
+      const response = await axios.get(`${API}/api/providers/${providerId}`);
       if (response.data.success) {
         setProvider(response.data.data);
       }
