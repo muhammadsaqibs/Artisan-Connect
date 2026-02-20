@@ -21,7 +21,7 @@ export default function ProductsPage() {
     let ignore = false;
     (async () => {
       try {
-        const { data } = await axios.get("API/api/categories");
+        const { data } = await axios.get(`${API}/api/categories`);
         if (!ignore) setCategories(data?.data || []);
       } catch {
         if (!ignore) setCategories([]);
@@ -40,7 +40,7 @@ export default function ProductsPage() {
         if (category) params.category = category;
         if (subcategory) params.subCategory = subcategory;
         if (search.trim()) params.keyword = search.trim();
-        const { data } = await axios.get("API/api/products", { params, signal: controller.signal });
+        const { data } = await axios.get(`${API}/api/products`, { params, signal: controller.signal });
         setProducts(data?.data || []);
       } catch (e) {
         if (!axios.isCancel(e)) {

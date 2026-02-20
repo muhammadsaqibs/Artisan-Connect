@@ -16,7 +16,7 @@ export default function ProvidersPage() {
   useEffect(() => {
     setLoading(true);
     axios
-      .get("API/api/providers")
+      .get(`${API}/api/providers`)
       .then((res) => setProviders(res.data.data || []))
       .catch(() => setProviders([]))
       .finally(() => setLoading(false));
@@ -31,7 +31,7 @@ export default function ProvidersPage() {
       }
 
       const response = await axios.post(
-        "API/api/bookings",
+        `${API}/api/bookings`,
         bookingData,
         {
           headers: { Authorization: `Bearer ${token}` },

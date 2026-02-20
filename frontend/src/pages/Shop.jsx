@@ -24,7 +24,7 @@ export default function Shop() {
           minPrice: minPrice || undefined,
           maxPrice: maxPrice || undefined,
         };
-        const { data } = await axios.get("API/api/products", {
+        const { data } = await axios.get(`${API}/api/products`, {
           params,
           signal: controller.signal,
         });

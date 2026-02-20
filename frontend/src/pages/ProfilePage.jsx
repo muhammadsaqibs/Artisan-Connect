@@ -25,7 +25,7 @@ export default function ProfilePage() {
       formData.append("profilePicture", profilePicture);
 
       const response = await axios.put(
-        "API/api/users/profile/picture",
+        `${API}/api/users/profile/picture`,
         formData,
         {
           headers: {

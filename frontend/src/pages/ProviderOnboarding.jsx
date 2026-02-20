@@ -30,7 +30,7 @@ export default function ProviderOnboarding() {
   const [alert, setAlert] = useState(null);
 
   useEffect(() => {
-    axios.get("API/api/categories").then((res) => setCategories(res.data.data || [])).catch(()=>{});
+    axios.get(`${API}/api/categories`).then((res) => setCategories(res.data.data || [])).catch(()=>{});
   }, []);
 
   const onChange = (e) => {
@@ -43,14 +43,14 @@ export default function ProviderOnboarding() {
     const fd = new FormData();
     fd.append("file", file);
     if (isCover) fd.append("_uploadField", "cover");
-    await axios.put("API/api/providers/me", fd, { headers: { ...authHeaders, "Content-Type": "multipart/form-data" } });
+    await axios.put(`${API}/api/providers/me`, fd, { headers: { ...authHeaders, "Content-Type": "multipart/form-data" } });
   };
 
   const uploadDoc = async (file) => {
     if (!file) return;
     const fd = new FormData();
     fd.append("document", file);
-    await axios.post("API/api/providers/me/documents", fd, { headers: { ...authHeaders, "Content-Type": "multipart/form-data" } });
+    await axios.post(`${API}/api/providers/me/documents`, fd, { headers: { ...authHeaders, "Content-Type": "multipart/form-data" } });
   };
 
   const handleSubmit = async (e) => {
@@ -64,7 +64,7 @@ export default function ProviderOnboarding() {
         age: Number(form.age || 0),
       };
       if (typeof payload.skills === 'string') payload.skills = payload.skills;
-      await axios.put("API/api/providers/me", payload, { headers: authHeaders });
+      await axios.put(`${API}/api/providers/me`, payload, { headers: authHeaders });
 
       if (profilePicture) await uploadImage(profilePicture, false);
       if (cover) await uploadImage(cover, true);

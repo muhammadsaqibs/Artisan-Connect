@@ -80,7 +80,7 @@ export default function ProviderBookingPage() {
       };
 
       const { data } = await axios.post(
-        "API/api/requests",
+        `${API}/api/requests`,
         bookingData,
         { headers: { Authorization: `Bearer ${token}` } }
       );

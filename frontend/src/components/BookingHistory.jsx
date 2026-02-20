@@ -18,7 +18,7 @@ export default function BookingHistory() {
   const fetchBookings = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get("API/api/bookings/customer", {
+      const response = await axios.get(`${API}/api/bookings/customer`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setBookings(response.data.data);

@@ -39,7 +39,7 @@ export default function FlashSalePage() {
     const controller = new AbortController();
     (async () => {
       try {
-        const { data } = await axios.get("API/api/products", { params: { flashSale: true }, signal: controller.signal });
+        const { data } = await axios.get(`${API}/api/products`, { params: { flashSale: true }, signal: controller.signal });
         const items = (data?.data || []);
         setFlashDeals(items.map(p => ({ id: p._id, title: p.name, price: p.price, image: p.image?.startsWith("http") ? p.image : `API${p.image || ""}`, endsAt: p.flashSaleEndsAt })));
         const ends = items

@@ -102,8 +102,8 @@ export default function BookingPage() {
         },
       };
 
-      const response = await axios.post(
-        "API/api/bookings",
+          const response = await axios.post(
+            `${API}/api/bookings`,
         bookingData,
         {
           headers: { Authorization: `Bearer ${token}` },

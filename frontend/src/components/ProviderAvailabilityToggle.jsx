@@ -12,7 +12,7 @@ export default function ProviderAvailabilityToggle({ isAvailable, onToggle }) {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.put(
-        "API/api/providers/availability",
+        `${API}/api/providers/availability`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` },
