@@ -31,9 +31,9 @@ export default function AuthProvider({ children }) {
     
     if (payload.isAdmin) {
       navigate("/admin");
-    } else if (payload.role === "provider" && !payload.providerProfileId) {
-      // Provider without profile, redirect to onboarding
-      navigate("/provider-onboarding");
+    } else if (payload.role === "provider") {
+      // Always redirect providers to their dashboard
+      navigate("/provider-dashboard");
     } else {
       navigate("/dashboard");
     }

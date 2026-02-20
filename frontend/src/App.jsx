@@ -15,6 +15,7 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import ProfilePage from "./pages/ProfilePage"; 
 import UserDashboard from "./pages/UserDashboard";
+import ProviderDashboard from "./pages/ProviderDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import ProvidersPage from "./pages/ProvidersPage";
 import ProviderBookingPage from "./pages/ProviderBookingPage";
@@ -130,6 +131,16 @@ export default function App() {
           element={
             <ProtectedRoute>
               <TitleWrapper title="Dashboard"><UserDashboard /></TitleWrapper>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ✅ Provider Dashboard */}
+        <Route
+          path="/provider-dashboard"
+          element={
+            <ProtectedRoute>
+              <TitleWrapper title="Provider Dashboard"><ProviderDashboard /></TitleWrapper>
             </ProtectedRoute>
           }
         />

@@ -30,7 +30,7 @@ export default function UserDashboard() {
       {/* User Profile Header */}
       <div className="bg-white rounded-xl shadow p-6 mb-8 flex items-center gap-4">
         <img
-          src={user?.profilePicture ? (user.profilePicture.startsWith("http") ? user.profilePicture : `API${user.profilePicture}`) : getPlaceholderImage(100)}
+          src={user?.profilePicture ? (user.profilePicture.startsWith("http") ? user.profilePicture : `${API}${user.profilePicture}`) : getPlaceholderImage(100)}
           alt="profile"
           className="w-16 h-16 rounded-full object-cover bg-gray-200"
           onError={(e) => {
