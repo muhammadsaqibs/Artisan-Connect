@@ -53,7 +53,9 @@ const allowedOrigins = [
   "http://localhost:3000",
   // Netlify production frontend (no trailing slash)
   "https://artisanconnects.netlify.app",
-];
+  // Add any Vercel preview URLs if needed
+  process.env.FRONTEND_URL,
+].filter(Boolean); // Remove undefined entries
 
 app.use(cors({
   origin: (origin, callback) => {
@@ -108,5 +110,12 @@ app.use(errorHandler);
 // =====================
 // Start server
 // =====================
-const PORT = process.env.PORT ;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+const PORT = process.env.PORT || 5000;
+
+// Only start the server when running locally (not on Vercel)
+if (process.env.NODE_ENV !== "production") {
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+}
+
+// Export app for Vercel Serverless Functions
+export default app;
